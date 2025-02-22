@@ -20,13 +20,17 @@ public abstract class DBContext<T> {
 
     public DBContext() {
         try {
-            String user = "kien";
-            String pass = "1234";
+            // user và password của SQL
+            String user = "sa";
+            String pass = "123";
             String url = "jdbc:sqlserver://localhost\\LAPTOP-745AKDLB:1433;databaseName=Users_PRJ;encrypt=true;trustServerCertificate=true";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            connection = DriverManager.getConnection(url,  user, pass);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        } catch (SQLException ex) {
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public abstract ArrayList<T> list();

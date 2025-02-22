@@ -46,7 +46,7 @@ public class LoginController extends HttpServlet {
         
         if(user != null){
             HttpSession session = request.getSession();
-            session.getAttribute("user",user);
+            session.setAttribute("user",user);
             response.sendRedirect("welcome");
         }else{
             response.getWriter().println("Login Failse! Please try again");

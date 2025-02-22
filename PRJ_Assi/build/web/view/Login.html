@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Login</title>
+         <style>
+             .box
+             {
+                 display: flex;
+                 justify-content: center;
+                 align-items: center;
+                 height: 100vh;
+                 margin: 0;
+                 background-color: aqua; /* Màu nền nhẹ */
+            }          
+        </style>
+        
+        <style>
+            .container {
+    text-align: center;
+    background: burlywood;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+            
+        </style>
+        
+        
+    </head>
+    <body>
+        <div class="box container">  
+        <form action="login" method="post">
+            <h1 style="color: white">Login Page</h1>  
+            Username: <input type="text" name="username"/><br/>
+            Password: <input type="password" name="password"/><br/>
+            <input type="submit" value="Login"/>
+        </form>
+        </div>
+        
+    </body>
+</html>

@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 public class DBContextUsers extends DBContext<User>{
    public User  get(String username, String password){
        try{
+          //Để ý String sql 
          String sql = "SELECT username,displayname FROM Users\n"
                     + "WHERE username = ? AND [password] = ?";
        PreparedStatement stm = connection.prepareStatement(sql);
