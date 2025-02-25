@@ -16,10 +16,8 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author ADM
  */
-public class ListUser extends HttpServlet {
-
-
-    
+public class DeleteUser extends HttpServlet {
+       
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {

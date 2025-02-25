@@ -8,6 +8,18 @@
         <servlet-name>UpdateUser</servlet-name>
         <servlet-class>controller.user.UpdateUser</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteUser</servlet-name>
+        <servlet-class>controller.user.DeleteUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateUser</servlet-name>
+        <servlet-class>controller.user.CreateUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListUser</servlet-name>
+        <servlet-class>controller.user.ListUser</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>WelcomeController</servlet-name>
         <url-pattern>/welcome</url-pattern>
@@ -15,5 +27,17 @@
     <servlet-mapping>
         <servlet-name>UpdateUser</servlet-name>
         <url-pattern>/user/update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteUser</servlet-name>
+        <url-pattern>/user/delete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateUser</servlet-name>
+        <url-pattern>/user/create</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListUser</servlet-name>
+        <url-pattern>/user/list</url-pattern>
     </servlet-mapping>
 </web-app>
