@@ -4,6 +4,8 @@
  */
 package data;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author ADM
@@ -13,6 +15,14 @@ public class User {
     private String username;
     private String password;
     private String displayname;
+    private Employee employee;
+    
+    private ArrayList<Role> roles = new ArrayList<>();
+
+    public ArrayList<Role> getRoles() {
+        return roles;
+    }
+
     
     public String getUsername() {
         return username;
@@ -36,6 +46,14 @@ public class User {
 
     public void setDisplayname(String displayname) {
         this.displayname = displayname;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
     
     
