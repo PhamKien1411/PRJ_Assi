@@ -61,6 +61,7 @@ CREATE TABLE Role_Feature (
     FOREIGN KEY (id_Feature) REFERENCES Features(id_Feature )
 );
 
+--bảng Emphoyees( 
 INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) VALUES (1, N'Mr Kien', 1, NULL)
 INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) values (2, N'Mr John Wick',1,1 )
 INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) VALUES (3, N'Mr A', 1, 2)
@@ -108,6 +109,46 @@ insert into Role_Feature(id_Roles,id_Feature) values (3,4)
 insert into Role_Feature(id_Roles,id_Feature) values (4,4)
 
 
-INSERT into Department ( id_Department, name_Department) VALUES (1, N'IT')
-INSERT into Department ( id_Department, name_Department) VALUES (2, N'Accounting')
-INSERT into Department ( id_Department, name_Department) VALUES (3, N'Marketing')
+INSERT into Department (id_Department, name_Department) VALUES (1, N'IT')
+INSERT into Department (id_Department, name_Department) VALUES (2, N'Accounting')
+INSERT into Department (id_Department, name_Department) VALUES (3, N'Marketing')
+
+WITH employee_hierarchy AS (
+    SELECT id_Employee, managerid, 0 AS level
+    FROM Employees
+    WHERE id_Employee = 1
+    UNION ALL   
+    SELECT e.id_Employee, e.managerid, eh.level + 1
+    FROM Employees e
+    INNER JOIN employee_hierarchy eh ON e.managerid = eh.id_Employee
+)
+
+SELECT e.id_Employee as [staffid], 
+       staff.name_Employee as [staffname],
+       e.managerid as [ID quản lí],
+       manager.name_Employee as [Tên quản lý],
+       d.id_Department as [Mã phòng ban],
+       d.name_Department as [Tên phòng ban]
+FROM employee_hierarchy e INNER JOIN Employees staff ON staff.id_Employee = e.id_Employee
+                          INNER JOIN Department d ON d.id_Department = staff.id_Department
+                          LEFT JOIN Employees manager ON e.managerid = manager.id_Employee
+
+
+
+SELECT u.username,
+       u.displayname,
+	   r.id_Roles,
+	   r.name_Roles,
+	   f.id_Feature,
+	   f.url_Feature,
+	   e.id_Employee,
+	   e.name_Employee,
+	   d.id_Department,
+	   d.name_Department
+FROM Users u INNER JOIN Employees e ON u.id_Employee = e.id_Employee
+             INNER JOIN Department d ON e.id_Department = d.id_Department
+             LEFT JOIN User_Role ur ON u.username = ur.username
+             LEFT JOIN Roles r ON ur.id_Roles = r.id_Roles
+             LEFT JOIN Role_Feature rf ON rf.id_Roles = r.id_Roles
+             LEFT JOIN Features f ON f. id_Feature  = rf. id_Feature
+WHERE u.username = 'kien' AND u.password = '1234';

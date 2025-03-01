@@ -5,7 +5,9 @@
 
 package controller.login;
 
-import dal.DBContextUsers;
+import dal.EmployeeDBContext;
+import dal.UsersDBContext;
+import data.Employee;
 import data.User;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -27,12 +29,17 @@ public class LoginController extends HttpServlet {
     throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        DBContextUsers db = new DBContextUsers();
+        UsersDBContext db = new UsersDBContext();
         User user = db.get(username, password);
         
         
         
         if(user != null){
+            
+            EmployeeDBContext demp = new EmployeeDBContext();
+            Employee profile = demp.get(user.getEmployee().getId());
+            user.setEmployee(profile);
+            /*-------------------------------------------*/           
             HttpSession session = request.getSession();
             session.setAttribute("user",user);
             response.sendRedirect("welcome");
