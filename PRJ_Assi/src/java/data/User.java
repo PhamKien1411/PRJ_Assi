@@ -12,10 +12,10 @@ import java.util.ArrayList;
  */
 public class User {
 
-    private String username;
+    private String username; 
     private String password;
     private String displayname;
-    private Employee employee;
+    private Employee employee; 
     
     private ArrayList<Role> roles = new ArrayList<>();
 

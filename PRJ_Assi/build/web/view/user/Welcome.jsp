@@ -15,13 +15,11 @@
     </head>
     <body>
         <h1>Hello ${sessionScope.user.displayname}</h1>
-        
-        
-        
+               
         <c:if test="${sessionScope.user.employee.manager ne null}">
-            you need to report to: ${sessionScope.user.employee.manager.name} <br/>
+            Cấp trên: ${sessionScope.user.employee.manager.name} <br/>
         </c:if>
-            <h1>Report to you:</h1>
+            <h1>Danh sách nhân viên được quản lý bởi bạn: </h1>
         <c:forEach items="${sessionScope.user.employee.staffs}" var="s">
             ${s.name} <br/>
         </c:forEach>

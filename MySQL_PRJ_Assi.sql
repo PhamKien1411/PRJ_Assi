@@ -18,7 +18,6 @@ create table Employees(
 
 );
 
-
 ---Tạo bảng User
 CREATE TABLE Users (
     username VARCHAR(150) PRIMARY KEY,
@@ -62,21 +61,21 @@ CREATE TABLE Role_Feature (
 );
 
 --bảng Emphoyees( 
-INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) VALUES (1, N'Mr Kien', 1, NULL)
-INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) values (2, N'Mr John Wick',1,1 )
-INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) VALUES (3, N'Mr A', 1, 2)
-INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) VALUES (4, N'Mr B', 1, 2)
-INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid])VALUES (5, N'Mr C', 1, 2)
-INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid])VALUES (6, N'Mr D', 1, 2)
+INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) VALUES (1, N'Mr.Kien', 1, NULL)
+INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) values (2, N'Mr.John',1,1 )
+INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) VALUES (3, N'Mr.A', 1, 2)
+INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) VALUES (4, N'Mr.B', 1, 2)
+INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid])VALUES (5, N'Mr.C', 1, 2)
+INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid])VALUES (6, N'Mr.D', 1, 2)
 
 
 ------tạo bảng insert into của bảng Users
-insert into Users (username,[password],displayname) values (N'kien', N'1234', N'Mr Kien')
-insert into Users (username,[password],displayname) values (N'john', N'12', N'Mr John Wick')
-insert into Users (username,[password],displayname) values (N'mra', N'123', N'Mr A')
-insert into Users (username,[password],displayname) values (N'mrb', N'123', N'Mr B')
-insert into Users (username,[password],displayname) values (N'mrc', N'123', N'Mr C')
-insert into Users (username,[password],displayname) values (N'mrd', N'123', N'Mr D')
+insert into Users (username,[password],displayname) values (N'kien', N'1234', N'Mr.Kien')
+insert into Users (username,[password],displayname) values (N'john', N'12', N'Mr.John')
+insert into Users (username,[password],displayname) values (N'mra', N'123', N'Mr.A')
+insert into Users (username,[password],displayname) values (N'mrb', N'123', N'Mr.B')
+insert into Users (username,[password],displayname) values (N'mrc', N'123', N'Mr.C')
+insert into Users (username,[password],displayname) values (N'mrd', N'123', N'Mr.D')
 
 -------tạo bảng insert into User_Role
 insert into User_Role(username,id_Roles) values (N'kien',1)
@@ -113,6 +112,8 @@ INSERT into Department (id_Department, name_Department) VALUES (1, N'IT')
 INSERT into Department (id_Department, name_Department) VALUES (2, N'Accounting')
 INSERT into Department (id_Department, name_Department) VALUES (3, N'Marketing')
 
+
+
 WITH employee_hierarchy AS (
     SELECT id_Employee, managerid, 0 AS level
     FROM Employees
@@ -133,22 +134,52 @@ FROM employee_hierarchy e INNER JOIN Employees staff ON staff.id_Employee = e.id
                           INNER JOIN Department d ON d.id_Department = staff.id_Department
                           LEFT JOIN Employees manager ON e.managerid = manager.id_Employee
 
+SELECT * FROM Users u INNER JOIN Employees e ON u.id_Employee = e.id_Employee WHERE u.username = 'kien';
+
+SELECT * FROM Users u 
+INNER JOIN Employees e ON u.id_Employee = e.id_Employee 
+INNER JOIN Department d ON e.id_Department = d.id_Department 
+WHERE u.username = 'kien';
+
+
+SELECT ur.username, r.id_Roles, r.name_Roles
+FROM User_Role ur
+LEFT JOIN Roles r ON ur.id_Roles = r.id_Roles
+WHERE ur.username = 'kien';
+
+
+SELECT rf.id_Roles, f.id_Feature, f.url_Feature
+FROM Role_Feature rf
+LEFT JOIN Features f ON rf.id_Feature = f.id_Feature
+WHERE rf.id_Roles IN (SELECT id_Roles FROM User_Role WHERE username = 'kien');
+
+SELECT * FROM Users WHERE username = 'john' AND id_Employee IS NULL;
+UPDATE Users SET id_Employee = 1 WHERE username = 'kien';
+UPDATE Users SET id_Employee = 2 WHERE username = 'john';
+UPDATE Users SET id_Employee = 3 WHERE username = 'mra';
+UPDATE Users SET id_Employee = 4 WHERE username = 'mrb';
+UPDATE Users SET id_Employee = 5 WHERE username = 'mrc';
+UPDATE Users SET id_Employee = 6 WHERE username = 'mrd';
 
 
 SELECT u.username,
        u.displayname,
-	   r.id_Roles,
-	   r.name_Roles,
-	   f.id_Feature,
-	   f.url_Feature,
-	   e.id_Employee,
-	   e.name_Employee,
-	   d.id_Department,
-	   d.name_Department
-FROM Users u INNER JOIN Employees e ON u.id_Employee = e.id_Employee
-             INNER JOIN Department d ON e.id_Department = d.id_Department
-             LEFT JOIN User_Role ur ON u.username = ur.username
-             LEFT JOIN Roles r ON ur.id_Roles = r.id_Roles
-             LEFT JOIN Role_Feature rf ON rf.id_Roles = r.id_Roles
-             LEFT JOIN Features f ON f. id_Feature  = rf. id_Feature
-WHERE u.username = 'kien' AND u.password = '1234';
+       r.id_Roles,
+       r.name_Roles,
+       f.id_Feature,
+       f.url_Feature,
+       e.id_Employee,
+       e.name_Employee,
+       d.id_Department,
+       d.name_Department 
+FROM Users u
+INNER JOIN Employees e ON u.id_Employee = e.id_Employee
+INNER JOIN Department d ON e.id_Department = d.id_Department
+LEFT JOIN User_Role ur ON u.username = ur.username
+LEFT JOIN Roles r ON ur.id_Roles = r.id_Roles
+LEFT JOIN Role_Feature rf ON rf.id_Roles = r.id_Roles
+LEFT JOIN Features f ON f.id_Feature = rf.id_Feature
+WHERE u.username = 'kien' and u.password = '1234';
+
+
+
