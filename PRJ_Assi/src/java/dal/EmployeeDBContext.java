@@ -47,6 +47,7 @@ public class EmployeeDBContext extends DBContext<Employee> {
                      FROM employee_hierarchy e INNER JOIN Employees staff ON staff.id_Employee = e.id_Employee
                                                INNER JOIN Department d ON d.id_Department = staff.id_Department
                                                LEFT JOIN Employees manager ON e.managerid = manager.id_Employee
+                        Order by e.id_Employee asc; 
                      """;
 
             //PreparedStatement được dùng để ngăn ngừa SQL Injection.

@@ -67,23 +67,40 @@ INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) V
 INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) VALUES (4, N'Mr.B', 1, 2)
 INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid])VALUES (5, N'Mr.C', 1, 2)
 INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid])VALUES (6, N'Mr.D', 1, 2)
+-----------------------------------------------------------------------------
+INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) values (7, N'Mrs.Linh',3,1)
+INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) VALUES (8, N'Mrs.E', 3, 7)
+INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) VALUES (9, N'Mrs.F', 3, 7)
+INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) VALUES (10, N'Mrs.G', 3, 7)
 
 
 ------tạo bảng insert into của bảng Users
 insert into Users (username,[password],displayname) values (N'kien', N'1234', N'Mr.Kien')
 insert into Users (username,[password],displayname) values (N'john', N'12', N'Mr.John')
+insert into Users (username,[password],displayname) values (N'linh', N'12', N'Mrs.Linh')
 insert into Users (username,[password],displayname) values (N'mra', N'123', N'Mr.A')
 insert into Users (username,[password],displayname) values (N'mrb', N'123', N'Mr.B')
 insert into Users (username,[password],displayname) values (N'mrc', N'123', N'Mr.C')
 insert into Users (username,[password],displayname) values (N'mrd', N'123', N'Mr.D')
+--------------------------
+insert into Users (username,[password],displayname) values (N'mrse', N'123', N'Mrs.E')
+insert into Users (username,[password],displayname) values (N'mrsf', N'123', N'Mrs.F')
+insert into Users (username,[password],displayname) values (N'mrsg', N'123', N'Mrs.G')
+
 
 -------tạo bảng insert into User_Role
 insert into User_Role(username,id_Roles) values (N'kien',1)
 insert into User_Role(username,id_Roles) values (N'john',2)
+insert into User_Role(username,id_Roles) values (N'linh',2)
 insert into User_Role(username,id_Roles) values (N'mra',3)
 insert into User_Role(username,id_Roles) values (N'mrb',3)
 insert into User_Role(username,id_Roles) values (N'mrc',3)
 insert into User_Role(username,id_Roles) values (N'mrd',3)
+-----------------
+insert into User_Role(username,id_Roles) values (N'mrse',3)
+insert into User_Role(username,id_Roles) values (N'mrsf',3)
+insert into User_Role(username,id_Roles) values (N'mrsg',3)
+
 
 ----------------bảng insert into  Roles
 insert into Roles(id_Roles,name_Roles) values(1,N'Sếp')
@@ -98,14 +115,17 @@ INSERT into Features(id_Feature, url_Feature) values (4, N'/user/delete')
 
 ------------------bảng insert into Role_Feature
 insert into Role_Feature(id_Roles,id_Feature) values (1,1)
-insert into Role_Feature(id_Roles,id_Feature) values (1,2)
-insert into Role_Feature(id_Roles,id_Feature) values (1,3)
-insert into Role_Feature(id_Roles,id_Feature) values (1,4)
+
 insert into Role_Feature(id_Roles,id_Feature) values (2,1)
 insert into Role_Feature(id_Roles,id_Feature) values (2,2)
 insert into Role_Feature(id_Roles,id_Feature) values (2,3)
+insert into Role_Feature(id_Roles,id_Feature) values (2,4)
+
+insert into Role_Feature(id_Roles,id_Feature) values (3,2)
+insert into Role_Feature(id_Roles,id_Feature) values (3,3)
 insert into Role_Feature(id_Roles,id_Feature) values (3,4)
-insert into Role_Feature(id_Roles,id_Feature) values (4,4)
+
+
 
 
 INSERT into Department (id_Department, name_Department) VALUES (1, N'IT')
@@ -133,6 +153,7 @@ SELECT e.id_Employee as [staffid],
 FROM employee_hierarchy e INNER JOIN Employees staff ON staff.id_Employee = e.id_Employee
                           INNER JOIN Department d ON d.id_Department = staff.id_Department
                           LEFT JOIN Employees manager ON e.managerid = manager.id_Employee
+Order by e.id_Employee asc;
 
 SELECT * FROM Users u INNER JOIN Employees e ON u.id_Employee = e.id_Employee WHERE u.username = 'kien';
 
@@ -152,14 +173,6 @@ SELECT rf.id_Roles, f.id_Feature, f.url_Feature
 FROM Role_Feature rf
 LEFT JOIN Features f ON rf.id_Feature = f.id_Feature
 WHERE rf.id_Roles IN (SELECT id_Roles FROM User_Role WHERE username = 'kien');
-
-SELECT * FROM Users WHERE username = 'john' AND id_Employee IS NULL;
-UPDATE Users SET id_Employee = 1 WHERE username = 'kien';
-UPDATE Users SET id_Employee = 2 WHERE username = 'john';
-UPDATE Users SET id_Employee = 3 WHERE username = 'mra';
-UPDATE Users SET id_Employee = 4 WHERE username = 'mrb';
-UPDATE Users SET id_Employee = 5 WHERE username = 'mrc';
-UPDATE Users SET id_Employee = 6 WHERE username = 'mrd';
 
 
 SELECT u.username,
@@ -181,5 +194,12 @@ LEFT JOIN Role_Feature rf ON rf.id_Roles = r.id_Roles
 LEFT JOIN Features f ON f.id_Feature = rf.id_Feature
 WHERE u.username = 'kien' and u.password = '1234';
 
-
+WITH CTE AS (
+    SELECT id_Employee, ROW_NUMBER() OVER (ORDER BY id_Employee) AS new_id
+    FROM Employees
+)
+UPDATE Employees
+SET id_Employee = CTE.new_id
+FROM Employees
+JOIN CTE ON Employees.id_Employee = CTE.id_Employee;
 
