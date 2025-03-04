@@ -27,7 +27,7 @@ public class EmployeeDBContext extends DBContext<Employee> {
             //Truy vấn SQL với CTE đệ quy
             //Truy xuất nhân viên có id_Employee = ? (tức là nhân viên cần tìm).
             //Đệ quy lấy tất cả người quản lý(staff) của nhân viên đó (managerid).
-            String sql = """
+            /*String sql = """
                      WITH employee_hierarchy AS (
                          SELECT id_Employee, managerid, 0 AS level
                          FROM Employees
@@ -49,7 +49,20 @@ public class EmployeeDBContext extends DBContext<Employee> {
                                                LEFT JOIN Employees manager ON e.managerid = manager.id_Employee
                         Order by e.id_Employee asc; 
                      """;
-
+*/
+            
+            String sql = """
+                         SELECT e.id_Employee AS staffid, 
+                                    e.name_Employee AS staffname, 
+                                    e.managerid, 
+                                    m.name_Employee AS mananame,
+                                    d.id_Department AS departid, 
+                                    d.name_Department AS departname
+                             FROM Employees e
+                             LEFT JOIN Employees m ON e.managerid = m.id_Employee
+                             LEFT JOIN Department d ON e.id_Department = d.id_Department
+                             WHERE e.id_Employee = ? OR e.managerid = ?;
+                         """;
             //PreparedStatement được dùng để ngăn ngừa SQL Injection.
             //Giúp ngăn chặn việc bị phá hủy cơ sở dữ liệu, tránh bị hack và mã độc 
             PreparedStatement stm = connection.prepareStatement(sql);

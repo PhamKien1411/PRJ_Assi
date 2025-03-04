@@ -15,9 +15,7 @@ create table Employees(
     managerid INT,
     FOREIGN KEY (id_Department) REFERENCES Department(id_Department),
     FOREIGN KEY (managerid) REFERENCES Employees(id_Employee)
-
 );
-
 ---Tạo bảng User
 CREATE TABLE Users (
     username VARCHAR(150) PRIMARY KEY,
@@ -26,6 +24,23 @@ CREATE TABLE Users (
 	id_Employee int,
 	FOREIGN KEY (id_Employee) REFERENCES Employees(id_Employee)
 );
+
+
+CREATE TABLE LeaveRequest (
+    id_LeaveRequest INT PRIMARY KEY,
+    title VARCHAR(150),
+    reason VARCHAR(150),
+    [from_date] DATE, -- Đổi tên tránh từ khóa SQL
+    [to_date] DATE,
+    status TINYINT,
+    createBy VARCHAR(150),
+    ownerid_Employee INT, -- Tham chiếu chính xác đến id_Employee trong Employees
+    createddate DATETIME,
+    FOREIGN KEY (createBy) REFERENCES Users(username),
+    FOREIGN KEY (ownerid_Employee) REFERENCES Employees(id_Employee) -- Đúng tên cột
+);
+
+SELECT * FROM sys.objects WHERE name = 'LeaveRequest';
 
 -- Tạo bảng Roles
 CREATE TABLE Roles (
@@ -103,7 +118,7 @@ insert into User_Role(username,id_Roles) values (N'mrsg',3)
 
 
 ----------------bảng insert into  Roles
-insert into Roles(id_Roles,name_Roles) values(1,N'Sếp')
+insert into Roles(id_Roles,name_Roles) values(1,N'Lãnh đạo')
 insert into Roles(id_Roles,name_Roles) values(2,N'Trưởng phòng')
 insert into Roles(id_Roles,name_Roles) values(3,N'Nhân viên')
 
@@ -133,7 +148,7 @@ INSERT into Department (id_Department, name_Department) VALUES (2, N'Accounting'
 INSERT into Department (id_Department, name_Department) VALUES (3, N'Marketing')
 
 
-
+----------------------------------------------------------------
 WITH employee_hierarchy AS (
     SELECT id_Employee, managerid, 0 AS level
     FROM Employees
@@ -154,7 +169,7 @@ FROM employee_hierarchy e INNER JOIN Employees staff ON staff.id_Employee = e.id
                           INNER JOIN Department d ON d.id_Department = staff.id_Department
                           LEFT JOIN Employees manager ON e.managerid = manager.id_Employee
 Order by e.id_Employee asc;
-
+----------------------------------------------------------------
 SELECT * FROM Users u INNER JOIN Employees e ON u.id_Employee = e.id_Employee WHERE u.username = 'kien';
 
 SELECT * FROM Users u 
@@ -174,7 +189,7 @@ FROM Role_Feature rf
 LEFT JOIN Features f ON rf.id_Feature = f.id_Feature
 WHERE rf.id_Roles IN (SELECT id_Roles FROM User_Role WHERE username = 'kien');
 
-
+-------------------------------------------------------------
 SELECT u.username,
        u.displayname,
        r.id_Roles,
@@ -193,13 +208,27 @@ LEFT JOIN Roles r ON ur.id_Roles = r.id_Roles
 LEFT JOIN Role_Feature rf ON rf.id_Roles = r.id_Roles
 LEFT JOIN Features f ON f.id_Feature = rf.id_Feature
 WHERE u.username = 'kien' and u.password = '1234';
+-------------------------------------------------------
 
-WITH CTE AS (
-    SELECT id_Employee, ROW_NUMBER() OVER (ORDER BY id_Employee) AS new_id
-    FROM Employees
-)
-UPDATE Employees
-SET id_Employee = CTE.new_id
-FROM Employees
-JOIN CTE ON Employees.id_Employee = CTE.id_Employee;
+SELECT 
+    lr.id_LeaveRequest,
+    lr.title,
+    lr.reason,
+    lr.[from_date],  -- Đúng tên cột
+    lr.[to_date],    -- Đúng tên cột
+    lr.[status],
+    u.username AS createdbyusername,
+    u.displayname,
+    e.id_Employee AS ownereid,  -- Đúng tên cột trong Employees
+    e.name_Employee AS ename,   -- Đúng tên cột trong Employees
+    d.id_Department AS did,     -- Đúng tên cột trong Department
+    d.name_Department AS dname, -- Đúng tên cột trong Department
+    lr.[createddate]
+FROM LeaveRequest lr  
+INNER JOIN Users u ON u.username = lr.createBy  -- Đúng tên cột
+INNER JOIN Employees e ON e.id_Employee = lr.ownerid_Employee  -- Đúng tên cột
+INNER JOIN Department d ON e.id_Department = d.id_Department  -- Đúng tên cột
+WHERE lr.id_LeaveRequest = 4;
 
+
+	
