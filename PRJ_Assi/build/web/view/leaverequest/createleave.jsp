@@ -12,7 +12,10 @@
         <title>JSP Page</title>
     </head>
     <body>
-    <from action="create" method="POST">
+        <h1 style="color: brown">
+            Hello ${sessionScope.user.displayname}
+        </h1>
+    <form action="create" method="POST">
         Title: <input type="text" name="title"/> <br/>    
         Reason: <textarea name="reason"></textarea> <br/>
         From: <input type="date" name="from"/> <br/>
@@ -32,6 +35,6 @@
             <input type="submit" value="Send"/>
         
         
-    </from>
+    </form>
     </body>
 </html>

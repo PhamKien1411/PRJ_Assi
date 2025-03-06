@@ -67,6 +67,7 @@ public class EmployeeDBContext extends DBContext<Employee> {
             //Giúp ngăn chặn việc bị phá hủy cơ sở dữ liệu, tránh bị hack và mã độc 
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setInt(1, id);//đặt giá trị id vào dấu ? trong truy vấn SQL.
+            stm.setInt(2, id);
             ResultSet rs = stm.executeQuery();//thực thi truy vấn và nhận kết quả.
 /*-----------------------------------------------------------------------------------------*/
 //Duyệt qua kết quả và tạo đối tượng Employee        

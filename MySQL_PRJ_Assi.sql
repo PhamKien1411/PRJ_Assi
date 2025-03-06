@@ -40,7 +40,7 @@ CREATE TABLE LeaveRequest (
     FOREIGN KEY (ownerid_Employee) REFERENCES Employees(id_Employee) -- Đúng tên cột
 );
 
-SELECT * FROM sys.objects WHERE name = 'LeaveRequest';
+
 
 -- Tạo bảng Roles
 CREATE TABLE Roles (
@@ -121,30 +121,39 @@ insert into User_Role(username,id_Roles) values (N'mrsg',3)
 insert into Roles(id_Roles,name_Roles) values(1,N'Lãnh đạo')
 insert into Roles(id_Roles,name_Roles) values(2,N'Trưởng phòng')
 insert into Roles(id_Roles,name_Roles) values(3,N'Nhân viên')
+select * from Roles
+
+
 
 ------------------bảng insert into Features
-insert into Features(id_Feature,url_Feature) values  (1, N'/user/list')
-INSERT into Features(id_Feature, url_Feature) values (2, N'/user/create')
-INSERT into Features(id_Feature, url_Feature) values (3, N'/user/update')
-INSERT into Features(id_Feature, url_Feature) values (4, N'/user/delete')
+
+INSERT into Features(id_Feature, url_Feature) VALUES (1, N'/user/agendalist')
+INSERT into Features(id_Feature, url_Feature) VALUES (2, N'/leaverequest/create')
+INSERT into Features(id_Feature, url_Feature) VALUES (3, N'/leaverequest/update')
 
 ------------------bảng insert into Role_Feature
 insert into Role_Feature(id_Roles,id_Feature) values (1,1)
+insert into Role_Feature(id_Roles,id_Feature) values (1,2)
+insert into Role_Feature(id_Roles,id_Feature) values (1,3)
+insert into Role_Feature(id_Roles,id_Feature) values (1,4)
 
 insert into Role_Feature(id_Roles,id_Feature) values (2,1)
 insert into Role_Feature(id_Roles,id_Feature) values (2,2)
 insert into Role_Feature(id_Roles,id_Feature) values (2,3)
 insert into Role_Feature(id_Roles,id_Feature) values (2,4)
+insert into Role_Feature(id_Roles,id_Feature) values (2,5)
+insert into Role_Feature(id_Roles,id_Feature) values (2,6)
 
 insert into Role_Feature(id_Roles,id_Feature) values (3,2)
 insert into Role_Feature(id_Roles,id_Feature) values (3,3)
-insert into Role_Feature(id_Roles,id_Feature) values (3,4)
+insert into Role_Feature(id_Roles,id_Feature) values (3,5)
+insert into Role_Feature(id_Roles,id_Feature) values (3,6)
 
 
 
 
 INSERT into Department (id_Department, name_Department) VALUES (1, N'IT')
-INSERT into Department (id_Department, name_Department) VALUES (2, N'Accounting')
+INSERT into Department (id_Department, name_Department) VALUES (2, N'')
 INSERT into Department (id_Department, name_Department) VALUES (3, N'Marketing')
 
 
@@ -231,4 +240,9 @@ INNER JOIN Department d ON e.id_Department = d.id_Department  -- Đúng tên c�
 WHERE lr.id_LeaveRequest = 4;
 
 
+SELECT name_Employee 
+FROM Employees 
+WHERE ManagerID = (SELECT id_Employee FROM Employees WHERE name_Employee = 'Mr.Kien');
 	
+
+

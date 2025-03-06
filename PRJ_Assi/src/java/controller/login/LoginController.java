@@ -41,7 +41,7 @@ public class LoginController extends HttpServlet {
             /*-------------------------------------------*/           
             HttpSession session = request.getSession();
             session.setAttribute("user",user);
-            response.sendRedirect("welcome");
+            response.sendRedirect("leaverequest/create");
         }else{
             response.getWriter().println("Login Failse! Please try again");
         }

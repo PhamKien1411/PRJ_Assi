@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
-        <servlet-name>WelcomeController</servlet-name>
-        <servlet-class>controller.login.WelcomeController</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>UpdateUser</servlet-name>
         <servlet-class>controller.user.UpdateUser</servlet-class>
     </servlet>
@@ -29,10 +25,6 @@
         <servlet-class>controller.leaverequest.UpdateLeaveRequest</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>WelcomeController</servlet-name>
-        <url-pattern>/welcome</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>UpdateUser</servlet-name>
         <url-pattern>/user/update</url-pattern>
     </servlet-mapping>
@@ -56,6 +48,9 @@
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
+    
+    
+    
     <servlet-mapping>
         <servlet-name>CreateLeaveRequest</servlet-name>
         <url-pattern>/leaverequest/create</url-pattern>
@@ -64,6 +59,11 @@
         <servlet-name>UpdateLeaveRequest</servlet-name>
         <url-pattern>/leaverequest/update</url-pattern>
     </servlet-mapping>
+    
+    
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
     <welcome-file-list>
         <welcome-file>view/Login.html</welcome-file>
     </welcome-file-list>

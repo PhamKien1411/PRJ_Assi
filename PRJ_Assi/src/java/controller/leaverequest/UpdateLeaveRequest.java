@@ -41,20 +41,17 @@ public class UpdateLeaveRequest extends BaseAccessControlByCreator<LeaveRequest>
         LeaveRequestDBContext db = new LeaveRequestDBContext();
         db.update(lr);
         resp.getWriter().println("update" + lr.getId());
+    
+    
     }
     
-    
-
-   
-   
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, User user,LeaveRequest entity) throws ServletException, IOException {
         EmployeeDBContext db = new EmployeeDBContext();
         ArrayList<Employee> employees = db.list();
         req.setAttribute("employees", employees);
         req.setAttribute("leaverequest", entity);
-        req.getRequestDispatcher("/view/leaverequest/update.jsp").forward(req, resp);
+        req.getRequestDispatcher("../view/leaverequest/updateleave.jsp").forward(req, resp);
 
     }
 @Override

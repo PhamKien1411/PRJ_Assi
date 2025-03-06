@@ -23,17 +23,15 @@ import java.util.ArrayList;
  */
 public class CreateLeaveRequest extends BaseRequiredAuthenticationController {
    
-
-   
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response, User user)throws ServletException, IOException {
     LeaveRequest lr = new LeaveRequest();
     lr.setTitle(request.getParameter("title"));
     lr.setReason(request.getParameter("reason"));
-        lr.setFrom(Date.valueOf(request.getParameter("from")));
-        lr.setTo(Date.valueOf(request.getParameter("to")));
+        lr.setFrom(Date.valueOf(request.getParameter("from_date")));
+        lr.setTo(Date.valueOf(request.getParameter("to_date")));
         Employee owner = new Employee();
-        owner.setId(Integer.parseInt(request.getParameter("eid")));
+        owner.setId(Integer.parseInt(request.getParameter("ownerid_Employee")));
         lr.setOwner(owner);
         lr.setCreatedby(user);
         //LeaveRequestDBContext db = new LeaveRequestDBContext();
@@ -43,17 +41,16 @@ public class CreateLeaveRequest extends BaseRequiredAuthenticationController {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, User user)throws ServletException, IOException {
      EmployeeDBContext db = new EmployeeDBContext();
         ArrayList<Employee> employees = db.list();
         request.setAttribute("employees", employees);
         request.getRequestDispatcher("/view/leaverequest/createleave.jsp").forward(request, response);
     } 
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+
+}
+   
 
   
 
@@ -62,4 +59,4 @@ public class CreateLeaveRequest extends BaseRequiredAuthenticationController {
 
   
    
-}
+
