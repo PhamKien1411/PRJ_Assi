@@ -10,47 +10,46 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 /**
  *
  * @author ADM
  */
-//Lớp EmployeeDBContext kế thừa từ DBContext<Employee>, 
-//có nhiệm vụ thao tác với cơ sở dữ liệu để lấy thông tin về nhân viên (Employee). 
 public class EmployeeDBContext extends DBContext<Employee> {
+
+    @Override
+    public ArrayList<Employee> list() {
+        ArrayList<Employee> employees = new ArrayList<>();
+        try {
+            String sql = "SELECT [id_Employee]\n"
+                    + "      ,[name_Employee]\n"
+                    + "  FROM [Employees]";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Employee e = new Employee();
+                e.setId(rs.getInt("id_Employee"));
+                e.setName(rs.getString("name_Employee"));
+                employees.add(e);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (connection != null)
+                try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return employees;
+    }
 
     @Override
     public Employee get(int id) {
         ArrayList<Employee> employees = new ArrayList<>();
         //Một danh sách Employees được tạo để chứa dữ liệu nhân viên lấy từ cơ sở dữ liệu.
         try {
-            //Truy vấn SQL với CTE đệ quy
-            //Truy xuất nhân viên có id_Employee = ? (tức là nhân viên cần tìm).
-            //Đệ quy lấy tất cả người quản lý(staff) của nhân viên đó (managerid).
-            /*String sql = """
-                     WITH employee_hierarchy AS (
-                         SELECT id_Employee, managerid, 0 AS level
-                         FROM Employees
-                         WHERE id_Employee = ?
-                         UNION ALL   
-                         SELECT e.id_Employee, e.managerid, eh.level + 1
-                         FROM Employees e
-                         INNER JOIN employee_hierarchy eh ON e.managerid = eh.id_Employee
-                     )
-                     
-                     SELECT e.id_Employee as [staffid], 
-                            staff.name_Employee as [staffname],
-                            e.managerid as [managerid],
-                            manager.name_Employee as [mananame],
-                            d.id_Department as [departid],
-                            d.name_Department as [departname]
-                     FROM employee_hierarchy e INNER JOIN Employees staff ON staff.id_Employee = e.id_Employee
-                                               INNER JOIN Department d ON d.id_Department = staff.id_Department
-                                               LEFT JOIN Employees manager ON e.managerid = manager.id_Employee
-                        Order by e.id_Employee asc; 
-                     """;
-*/
-            
+
             String sql = """
                          SELECT e.id_Employee AS staffid, 
                                     e.name_Employee AS staffname, 
@@ -97,6 +96,13 @@ public class EmployeeDBContext extends DBContext<Employee> {
             }
         } catch (SQLException ex) {
             Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (connection != null)
+                try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(EmployeeDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         /*-----------------------------------------------------------------------------------*/
         // Xây dựng cây nhân viên (Hierarchy)
@@ -145,21 +151,5 @@ public class EmployeeDBContext extends DBContext<Employee> {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    @Override
-    public ArrayList<Employee> list() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-}
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
   
+}

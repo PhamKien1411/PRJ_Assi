@@ -16,12 +16,12 @@
             Hello ${sessionScope.user.displayname}
         </h1>
     <form action="create" method="POST">
-        Title: <input type="text" name="title"/> <br/>    
-        Reason: <textarea name="reason"></textarea> <br/>
-        From: <input type="date" name="from"/> <br/>
-            To: <input type="date" name="to"/> <br/>
+        Tiêu đề: <input type="text" name="title"/> <br/>    
+        Lý do: <textarea name="reason"></textarea> <br/>
+        Từ ngày: <input type="date" name="from"/> <br/>
+        Đến ngày: <input type="date" name="to"/> <br/>
             Owner: 
-            <select name="eid">
+            <select name="ownerid_Employee">
                 <c:forEach items="${requestScope.employees}" var="e">
                     <option value="${e.id}"
                             <c:if test="${e.id eq sessionScope.user.employee.id}">

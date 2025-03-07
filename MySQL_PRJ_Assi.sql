@@ -3,10 +3,12 @@ use User_PRJ_Assi
 
 
 ------tạo bảng Department(phòng ban)
+drop table Department
 create table Department(
    id_Department int primary key,
    name_Department varchar(150)
 );
+
 ------Tạo bảng employee
 create table Employees(
     id_Employee int primary key,
@@ -16,6 +18,17 @@ create table Employees(
     FOREIGN KEY (id_Department) REFERENCES Department(id_Department),
     FOREIGN KEY (managerid) REFERENCES Employees(id_Employee)
 );
+
+
+-- Tạo bảng Employee_Attendance (Chấm công)
+CREATE TABLE Employee_Attendance (
+    id_Attendance INT IDENTITY(1,1) PRIMARY KEY,
+	id_Employee INT NOT NULL,
+    attendance_date DATE NOT NULL, -- Đổi `date` thành `attendance_date`
+    status VARCHAR(150) CHECK (status IN ('working', 'leave')) NOT NULL, -- SQL Server không hỗ trợ ENUM
+    FOREIGN KEY (id_Employee) REFERENCES Employees(id_Employee)
+);
+
 ---Tạo bảng User
 CREATE TABLE Users (
     username VARCHAR(150) PRIMARY KEY,
@@ -23,6 +36,7 @@ CREATE TABLE Users (
     displayname NVARCHAR(150),
 	id_Employee int,
 	FOREIGN KEY (id_Employee) REFERENCES Employees(id_Employee)
+
 );
 
 
@@ -32,7 +46,7 @@ CREATE TABLE LeaveRequest (
     reason VARCHAR(150),
     [from_date] DATE, -- Đổi tên tránh từ khóa SQL
     [to_date] DATE,
-    status TINYINT,
+    status TINYINT DEFAULT 0,
     createBy VARCHAR(150),
     ownerid_Employee INT, -- Tham chiếu chính xác đến id_Employee trong Employees
     createddate DATETIME,
@@ -121,41 +135,57 @@ insert into User_Role(username,id_Roles) values (N'mrsg',3)
 insert into Roles(id_Roles,name_Roles) values(1,N'Lãnh đạo')
 insert into Roles(id_Roles,name_Roles) values(2,N'Trưởng phòng')
 insert into Roles(id_Roles,name_Roles) values(3,N'Nhân viên')
-select * from Roles
+
 
 
 
 ------------------bảng insert into Features
 
-INSERT into Features(id_Feature, url_Feature) VALUES (1, N'/user/agendalist')
+INSERT into Features(id_Feature, url_Feature) VALUES (1, N'/user/agenda')
 INSERT into Features(id_Feature, url_Feature) VALUES (2, N'/leaverequest/create')
 INSERT into Features(id_Feature, url_Feature) VALUES (3, N'/leaverequest/update')
 
+
+
 ------------------bảng insert into Role_Feature
 insert into Role_Feature(id_Roles,id_Feature) values (1,1)
-insert into Role_Feature(id_Roles,id_Feature) values (1,2)
-insert into Role_Feature(id_Roles,id_Feature) values (1,3)
-insert into Role_Feature(id_Roles,id_Feature) values (1,4)
 
-insert into Role_Feature(id_Roles,id_Feature) values (2,1)
 insert into Role_Feature(id_Roles,id_Feature) values (2,2)
 insert into Role_Feature(id_Roles,id_Feature) values (2,3)
-insert into Role_Feature(id_Roles,id_Feature) values (2,4)
-insert into Role_Feature(id_Roles,id_Feature) values (2,5)
-insert into Role_Feature(id_Roles,id_Feature) values (2,6)
+
 
 insert into Role_Feature(id_Roles,id_Feature) values (3,2)
 insert into Role_Feature(id_Roles,id_Feature) values (3,3)
-insert into Role_Feature(id_Roles,id_Feature) values (3,5)
-insert into Role_Feature(id_Roles,id_Feature) values (3,6)
-
-
 
 
 INSERT into Department (id_Department, name_Department) VALUES (1, N'IT')
-INSERT into Department (id_Department, name_Department) VALUES (2, N'')
 INSERT into Department (id_Department, name_Department) VALUES (3, N'Marketing')
 
+INSERT INTO Employee_Attendance (id_Employee, attendance_date, status) VALUES
+(3, '2025-03-03', 'working'),
+(3, '2025-03-04', 'working'),
+(3, '2025-03-05', 'working'),
+(3, '2025-03-06', 'leave'),
+(3, '2025-03-07', 'working'),
+
+(4, '2025-03-03', 'working'),
+(4, '2025-03-04', 'leave'),
+(4, '2025-03-05', 'working'),
+(4, '2025-03-06', 'leave'),
+(4, '2025-03-07', 'working'),
+
+
+(5, '2025-03-03', 'working'),
+(5, '2025-03-04', 'working'),
+(5, '2025-03-05', 'leave'),
+(5, '2025-03-06', 'leave'),
+(5, '2025-03-07', 'working'),
+
+(6, '2025-03-03', 'leave'),
+(6, '2025-03-04', 'leave'),
+(6, '2025-03-05', 'working'),
+(6, '2025-03-06', 'working'),
+(6, '2025-03-07', 'working');
 
 ----------------------------------------------------------------
 WITH employee_hierarchy AS (

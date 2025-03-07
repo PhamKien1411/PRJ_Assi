@@ -14,12 +14,12 @@
     <body>
     <from action="update" method="POST">
                     <input type="hidden" name="rid" value="${requestScope.leaverequest.id}" />
-            Title: <input type="text" name="title" value="${requestScope.leaverequest.title}"/> <br/>
-            Reason:<textarea name="reason">${requestScope.leaverequest.reason}</textarea> <br/>
-            From: <input type="date" name="from" value="${requestScope.leaverequest.from}"/> <br/>
-            To: <input type="date" name="to" value="${requestScope.leaverequest.to}"/> <br/>
+            Tiêu đề: <input type="text" name="title" value="${requestScope.leaverequest.title}"/> <br/>
+            Lý do:<textarea name="reason">${requestScope.leaverequest.reason}</textarea> <br/>
+            Từ ngày: <input type="date" name="from" value="${requestScope.leaverequest.from}"/> <br/>
+            Dến ngày: <input type="date" name="to" value="${requestScope.leaverequest.to}"/> <br/>
             Owner: 
-            <select name="eid">
+            <select name="ownerid_Employee">
                 <c:forEach items="${requestScope.employees}" var="e">
                     <option value="${e.id}"
                             <c:if test="${e.id eq requestScope.leaverequest.owner.id}">
