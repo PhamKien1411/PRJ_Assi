@@ -25,32 +25,44 @@ public class LoginController extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         UsersDBContext db = new UsersDBContext();
         User user = db.get(username, password);
-        
-        
-        
-        if(user != null){
-            
+        if (user != null) {
             EmployeeDBContext demp = new EmployeeDBContext();
             Employee profile = demp.get(user.getEmployee().getId());
             user.setEmployee(profile);
-            /*-------------------------------------------*/           
+            /*-------------------------------------------*/
             HttpSession session = request.getSession();
-            session.setAttribute("user",user);
-            response.sendRedirect("leaverequest/create");
-        }else{
+            session.setAttribute("user", user); // Lưu thông tin user vào session
+            if (user.hasRole("Nhân viên")|| user.hasRole("Trưởng phòng")){
+                response.sendRedirect("leaverequest/create");
+            } else {
+                 response.sendRedirect("agenda");
+            }
+
+        } else {
             response.getWriter().println("Login Failse! Please try again");
         }
-    }
 
+
+//          if(user.hasRole("Lãnh d?o")){
+//              response.sendRedirect("agenda");
+//          }else if(user.hasRole("Nhân viên") || user.hasRole("Tru?ng phòng")){
+//              response.sendRedirect("leaverequest/create");
+//          }else{
+//            response.getWriter().println("Login Failse! Please try again");
+//        }
+//        }else{
+//            response.getWriter().println("Login Failse! Please try again");
+//    }
+    }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-     request.getRequestDispatcher("view/Login.html").forward(request, response);
+     request.getRequestDispatcher("Login.html").forward(request, response);
     } 
     
 

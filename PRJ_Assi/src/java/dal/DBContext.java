@@ -18,17 +18,18 @@ public abstract class DBContext<T> {
     protected Connection connection;
 
     public DBContext() {
-        try {
-            // user và password của SQL
+      try {
             String user = "sa";
             String pass = "123";
-            
-            String url = "jdbc:sqlserver://localhost\\LAPTOP-745AKDLB:1433;databaseName=User_PRJ_Assi;encrypt=true;trustServerCertificate=true";
+            String url = "jdbc:sqlserver://localhost:1433;databaseName=User_PRJ_Assi;encrypt=true;trustServerCertificate=true";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            connection = DriverManager.getConnection(url,  user, pass);
+            connection = DriverManager.getConnection(url, user, pass);
+            System.out.println("Kết nối thành công!");
         } catch (ClassNotFoundException ex) {
+            System.out.println("Không tìm thấy driver SQL Server!");
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
+            System.out.println("Lỗi kết nối database: " + ex.getMessage());
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

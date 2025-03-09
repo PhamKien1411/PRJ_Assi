@@ -18,7 +18,7 @@ import java.io.IOException;
  * @author ADM
  */
 public abstract class BaseRequiredAuthenticationController extends HttpServlet{
-    private User getAuthenticatedUser(HttpServletRequest req) {
+      private User getAuthenticatedUser(HttpServletRequest req) {
         return (User) req.getSession().getAttribute("user");
     }
     

@@ -38,30 +38,27 @@ CREATE TABLE Users (
 	FOREIGN KEY (id_Employee) REFERENCES Employees(id_Employee)
 
 );
-
+select  * from users
 
 CREATE TABLE LeaveRequest (
-    id_LeaveRequest INT PRIMARY KEY,
-    title VARCHAR(150),
-    reason VARCHAR(150),
+    id_LeaveRequest INT IDENTITY(1,1) PRIMARY KEY not null,
+    title VARCHAR(150) not null,
+    reason VARCHAR(150) not null,
     [from_date] DATE, -- Đổi tên tránh từ khóa SQL
     [to_date] DATE,
     status TINYINT DEFAULT 0,
     createBy VARCHAR(150),
-    ownerid_Employee INT, -- Tham chiếu chính xác đến id_Employee trong Employees
-    createddate DATETIME,
+    owner_eid INT, -- Tham chiếu chính xác đến id_Employee trong Employees
+    createddate DATETIME default getDate(),
     FOREIGN KEY (createBy) REFERENCES Users(username),
-    FOREIGN KEY (ownerid_Employee) REFERENCES Employees(id_Employee) -- Đúng tên cột
+    FOREIGN KEY (owner_eid) REFERENCES Employees(id_Employee) -- Đúng tên cột
 );
-
-
 
 -- Tạo bảng Roles
 CREATE TABLE Roles (
     id_Roles INT PRIMARY KEY,
-    name_Roles VARCHAR(150)
+    name_Roles nVARCHAR(150)
 );
-
 
 -- Bảng trung gian User_Role để liên kết Users và Roles
 CREATE TABLE User_Role (
@@ -117,6 +114,15 @@ insert into Users (username,[password],displayname) values (N'mrsf', N'123', N'M
 insert into Users (username,[password],displayname) values (N'mrsg', N'123', N'Mrs.G')
 
 
+----------------bảng insert into  Roles
+insert into Roles(id_Roles,name_Roles) values(1,N'Lãnh đạo')
+insert into Roles(id_Roles,name_Roles) values(2,N'Trưởng phòng')
+insert into Roles(id_Roles,name_Roles) values(3,N'Nhân viên')
+
+
+
+
+
 -------tạo bảng insert into User_Role
 insert into User_Role(username,id_Roles) values (N'kien',1)
 insert into User_Role(username,id_Roles) values (N'john',2)
@@ -130,21 +136,16 @@ insert into User_Role(username,id_Roles) values (N'mrse',3)
 insert into User_Role(username,id_Roles) values (N'mrsf',3)
 insert into User_Role(username,id_Roles) values (N'mrsg',3)
 
-
-----------------bảng insert into  Roles
-insert into Roles(id_Roles,name_Roles) values(1,N'Lãnh đạo')
-insert into Roles(id_Roles,name_Roles) values(2,N'Trưởng phòng')
-insert into Roles(id_Roles,name_Roles) values(3,N'Nhân viên')
+select * from user_role
 
 
 
 
 ------------------bảng insert into Features
-
 INSERT into Features(id_Feature, url_Feature) VALUES (1, N'/user/agenda')
 INSERT into Features(id_Feature, url_Feature) VALUES (2, N'/leaverequest/create')
 INSERT into Features(id_Feature, url_Feature) VALUES (3, N'/leaverequest/update')
-
+INSERT into Features(id_Feature, url_Feature) VALUES (4, N'/leaverequest/view')
 
 
 ------------------bảng insert into Role_Feature
@@ -152,11 +153,11 @@ insert into Role_Feature(id_Roles,id_Feature) values (1,1)
 
 insert into Role_Feature(id_Roles,id_Feature) values (2,2)
 insert into Role_Feature(id_Roles,id_Feature) values (2,3)
-
+insert into Role_Feature(id_Roles,id_Feature) values (2,4)
 
 insert into Role_Feature(id_Roles,id_Feature) values (3,2)
 insert into Role_Feature(id_Roles,id_Feature) values (3,3)
-
+insert into Role_Feature(id_Roles,id_Feature) values (3,4)
 
 INSERT into Department (id_Department, name_Department) VALUES (1, N'IT')
 INSERT into Department (id_Department, name_Department) VALUES (3, N'Marketing')
@@ -186,8 +187,54 @@ INSERT INTO Employee_Attendance (id_Employee, attendance_date, status) VALUES
 (6, '2025-03-05', 'working'),
 (6, '2025-03-06', 'working'),
 (6, '2025-03-07', 'working');
-
 ----------------------------------------------------------------
+
+
+
+
+
+
+
+SELECT 
+    lr.id_LeaveRequest,
+    lr.title,
+    lr.reason,
+    lr.[from_date],  -- Đúng tên cột
+    lr.[to_date],    -- Đúng tên cột
+    lr.[status],
+    u.username AS createdbyusername,
+    u.displayname,
+    e.id_Employee AS ownereid,  -- Đúng tên cột trong Employees
+    e.name_Employee AS ename,   -- Đúng tên cột trong Employees
+    d.id_Department AS did,     -- Đúng tên cột trong Department
+    d.name_Department AS dname, -- Đúng tên cột trong Department
+    lr.[createddate]
+FROM LeaveRequest lr  
+INNER JOIN Users u ON u.username = lr.createBy  -- Đúng tên cột
+INNER JOIN Employees e ON e.id_Employee = lr.owner_eid  -- Đúng tên cột
+INNER JOIN Department d ON e.id_Department = d.id_Department  -- Đúng tên cột
+WHERE lr.id_LeaveRequest = 1;
+
+SELECT local_net_address, local_tcp_port FROM sys.dm_exec_connections WHERE net_transport = 'TCP';
+
+SELECT name, is_disabled FROM sys.sql_logins WHERE name = 'sa';
+
+SELECT username, password FROM Users WHERE username = 'kien';
+
+
+SELECT u.username, r.name_Roles 
+FROM Users u
+JOIN User_Role ur ON u.username = ur.username
+JOIN Roles r ON ur.id_Roles = r.id_Roles
+WHERE u.username = 'kien';
+
+
+SELECT r.name_Roles, f.url_Feature 
+FROM Role_Feature rf
+JOIN Roles r ON rf.id_Roles = r.id_Roles
+JOIN Features f ON rf.id_Feature = f.id_Feature
+WHERE r.name_Roles = 'Nhân viên';
+
 WITH employee_hierarchy AS (
     SELECT id_Employee, managerid, 0 AS level
     FROM Employees
@@ -208,71 +255,3 @@ FROM employee_hierarchy e INNER JOIN Employees staff ON staff.id_Employee = e.id
                           INNER JOIN Department d ON d.id_Department = staff.id_Department
                           LEFT JOIN Employees manager ON e.managerid = manager.id_Employee
 Order by e.id_Employee asc;
-----------------------------------------------------------------
-SELECT * FROM Users u INNER JOIN Employees e ON u.id_Employee = e.id_Employee WHERE u.username = 'kien';
-
-SELECT * FROM Users u 
-INNER JOIN Employees e ON u.id_Employee = e.id_Employee 
-INNER JOIN Department d ON e.id_Department = d.id_Department 
-WHERE u.username = 'kien';
-
-
-SELECT ur.username, r.id_Roles, r.name_Roles
-FROM User_Role ur
-LEFT JOIN Roles r ON ur.id_Roles = r.id_Roles
-WHERE ur.username = 'kien';
-
-
-SELECT rf.id_Roles, f.id_Feature, f.url_Feature
-FROM Role_Feature rf
-LEFT JOIN Features f ON rf.id_Feature = f.id_Feature
-WHERE rf.id_Roles IN (SELECT id_Roles FROM User_Role WHERE username = 'kien');
-
--------------------------------------------------------------
-SELECT u.username,
-       u.displayname,
-       r.id_Roles,
-       r.name_Roles,
-       f.id_Feature,
-       f.url_Feature,
-       e.id_Employee,
-       e.name_Employee,
-       d.id_Department,
-       d.name_Department 
-FROM Users u
-INNER JOIN Employees e ON u.id_Employee = e.id_Employee
-INNER JOIN Department d ON e.id_Department = d.id_Department
-LEFT JOIN User_Role ur ON u.username = ur.username
-LEFT JOIN Roles r ON ur.id_Roles = r.id_Roles
-LEFT JOIN Role_Feature rf ON rf.id_Roles = r.id_Roles
-LEFT JOIN Features f ON f.id_Feature = rf.id_Feature
-WHERE u.username = 'kien' and u.password = '1234';
--------------------------------------------------------
-
-SELECT 
-    lr.id_LeaveRequest,
-    lr.title,
-    lr.reason,
-    lr.[from_date],  -- Đúng tên cột
-    lr.[to_date],    -- Đúng tên cột
-    lr.[status],
-    u.username AS createdbyusername,
-    u.displayname,
-    e.id_Employee AS ownereid,  -- Đúng tên cột trong Employees
-    e.name_Employee AS ename,   -- Đúng tên cột trong Employees
-    d.id_Department AS did,     -- Đúng tên cột trong Department
-    d.name_Department AS dname, -- Đúng tên cột trong Department
-    lr.[createddate]
-FROM LeaveRequest lr  
-INNER JOIN Users u ON u.username = lr.createBy  -- Đúng tên cột
-INNER JOIN Employees e ON e.id_Employee = lr.ownerid_Employee  -- Đúng tên cột
-INNER JOIN Department d ON e.id_Department = d.id_Department  -- Đúng tên cột
-WHERE lr.id_LeaveRequest = 4;
-
-
-SELECT name_Employee 
-FROM Employees 
-WHERE ManagerID = (SELECT id_Employee FROM Employees WHERE name_Employee = 'Mr.Kien');
-	
-
-

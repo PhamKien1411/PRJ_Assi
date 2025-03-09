@@ -32,11 +32,11 @@ public class UpdateLeaveRequest extends BaseAccessControlByCreator<LeaveRequest>
         lr.setId(Integer.parseInt(req.getParameter("id_LeaveRequest")));
         lr.setTitle(req.getParameter("title"));
         lr.setReason(req.getParameter("reason"));
-        lr.setFrom(Date.valueOf(req.getParameter("from_date")));
-        lr.setTo(Date.valueOf(req.getParameter("to_date")));
+        lr.setFrom(req.getParameter("from_date"));
+        lr.setTo(req.getParameter("to_date"));
         Employee owner = new Employee();
         owner.setId(Integer.parseInt(req.getParameter("ownerid_Employee")));
-        lr.setOwner(owner);
+        lr.setOwner(owner.getId());
         lr.setCreatedby(user);
         LeaveRequestDBContext db = new LeaveRequestDBContext();
         db.update(lr);
@@ -51,7 +51,7 @@ public class UpdateLeaveRequest extends BaseAccessControlByCreator<LeaveRequest>
         ArrayList<Employee> employees = db.list();
         req.setAttribute("employees", employees);
         req.setAttribute("leaverequest", entity);
-        req.getRequestDispatcher("../view/leaverequest/updateleave.jsp").forward(req, resp);
+        req.getRequestDispatcher("../leaverequest/updateleave.jsp").forward(req, resp);
 
     }
 @Override

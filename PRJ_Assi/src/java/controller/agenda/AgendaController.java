@@ -22,21 +22,17 @@ import java.util.ArrayList;
 public class AgendaController extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-     AgendaDBContext db = new AgendaDBContext();
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+        // Kiểm tra session
+         AgendaDBContext db = new AgendaDBContext();
         ArrayList<Agenda> agendaList = db.list();
+        request.setAttribute("agendaList", agendaList);
+      request.getRequestDispatcher("agendaView.jsp").forward(request, response);
+    }
 
-        // Đặt danh sách vào request để hiển thị trên JSP
-        request.setAttribute("agendaData", agendaList);
-        request.getRequestDispatcher("view/agendaView.jsp").forward(request, response);
-    
-    } 
-
-    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         doGet(request, response);
-}
+    }
 }

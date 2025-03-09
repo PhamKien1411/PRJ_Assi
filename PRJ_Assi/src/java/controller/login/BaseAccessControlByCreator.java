@@ -12,22 +12,23 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-public abstract class BaseAccessControlByCreator<T extends BaseEntity> extends BaseRequiredAuthenticationController{
+public abstract class BaseAccessControlByCreator<T extends BaseEntity> extends BaseRequiredAuthenticationController {
+    
     private boolean isAccessed(T entity,User user)
     {
         return user.getUsername().equals(entity.getCreatedby().getUsername());
     }
     
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse response, User user) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
         T entity = getEntity(Integer.parseInt(req.getParameter("id")));
         if(isAccessed(entity, user))
         {
-            doPost(req, response, user, entity);
+            doPost(req, resp, user, entity);
         }
         else
         {
-            response.getWriter().println("access denied!");
+            resp.getWriter().println("access denied!");
         }
     }
     
@@ -38,7 +39,7 @@ public abstract class BaseAccessControlByCreator<T extends BaseEntity> extends B
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
-        T entity = getEntity(Integer.parseInt(req.getParameter("id")));
+        T entity = getEntity(Integer.parseInt(req.getParameter("id")));///
         if(isAccessed(entity, user))
         {
             doGet(req, resp, user, entity);
@@ -48,4 +49,5 @@ public abstract class BaseAccessControlByCreator<T extends BaseEntity> extends B
             resp.getWriter().println("access denied!");
         }
     }
+    
 }

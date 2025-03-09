@@ -22,7 +22,14 @@ public class User {
     public ArrayList<Role> getRoles() {
         return roles;
     }
-
+    public boolean hasRole(String roleName) {
+        for (Role role : roles) {
+            if (role.getName().equalsIgnoreCase(roleName)) {
+                return true;
+            }
+        }
+        return false;
+    }
     
     public String getUsername() {
         return username;

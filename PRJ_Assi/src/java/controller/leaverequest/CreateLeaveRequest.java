@@ -7,6 +7,7 @@ package controller.leaverequest;
 
 import controller.login.BaseRequiredAuthenticationController;
 import dal.EmployeeDBContext;
+import dal.LeaveRequestDBContext;
 import data.Employee;
 import data.LeaveRequest;
 import data.User;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -23,30 +25,35 @@ import java.util.ArrayList;
  */
 public class CreateLeaveRequest extends BaseRequiredAuthenticationController {
    
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response, User user)throws ServletException, IOException {
-    LeaveRequest lr = new LeaveRequest();
-    lr.setTitle(request.getParameter("title"));
-    lr.setReason(request.getParameter("reason"));
-        lr.setFrom(Date.valueOf(request.getParameter("from_date")));
-        lr.setTo(Date.valueOf(request.getParameter("to_date")));
+     protected void doPost(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
+        LeaveRequest lr = new LeaveRequest();
+        lr.setTitle(req.getParameter("title"));
+        lr.setReason(req.getParameter("reason"));
+        lr.setFrom(req.getParameter("from_date"));
+        lr.setTo(req.getParameter("to_date"));
         Employee owner = new Employee();
-        owner.setId(Integer.parseInt(request.getParameter("ownerid_Employee")));
-        lr.setOwner(owner);
+        owner.setId(Integer.parseInt(req.getParameter("ownerid_Employee")));
+        lr.setOwner(owner.getId());
         lr.setCreatedby(user);
-        //LeaveRequestDBContext db = new LeaveRequestDBContext();
-        //db.insert(lr);
-        response.getWriter().println("inserted" + lr.getId());
-    
+        LeaveRequestDBContext db = new LeaveRequestDBContext();
+        db.insert(lr);
+        resp.getWriter().println("inserted" + lr.getId());
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response, User user)throws ServletException, IOException {
-     EmployeeDBContext db = new EmployeeDBContext();
+    protected void doGet(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException, IOException {
+        if (!user.hasRole("Nhân viên")&&!user.hasRole("Trưởng phòng")) {
+            response.getWriter().println("Access denied!");
+            return;
+        }
+
+    
+        EmployeeDBContext db = new EmployeeDBContext();
         ArrayList<Employee> employees = db.list();
         request.setAttribute("employees", employees);
-        request.getRequestDispatcher("/view/leaverequest/createleave.jsp").forward(request, response);
-    } 
+        request.getRequestDispatcher("createleave.jsp").forward(request, response);
+
+    }
 
 
 }

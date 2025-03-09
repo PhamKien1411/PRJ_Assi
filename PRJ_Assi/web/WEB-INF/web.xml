@@ -38,7 +38,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CreateUser</servlet-name>
-        <url-pattern>/user/create</url-pattern>
+        <url-pattern>/create</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ListUser</servlet-name>
@@ -68,6 +68,6 @@
         <session-timeout>30</session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>view/Login.html</welcome-file>
+        <welcome-file>Login.html</welcome-file>
     </welcome-file-list>
 </web-app>

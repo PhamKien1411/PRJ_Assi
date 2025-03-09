@@ -13,13 +13,29 @@ import java.sql.*;
 public class LeaveRequest extends BaseEntity{
     private String title;
     private String reason;
-    private Date from;
-    private Date to;
+    private String from;
+    private String to;
     private int status;
 
     
-    private Employee owner;
-    private java.util.Date createddate;
+    private int owner;
+    private String createddate;
+
+    public LeaveRequest(String title, String reason, String from, String to, int status, int owner, String createddate) {
+        this.title = title;
+        this.reason = reason;
+        this.from = from;
+        this.to = to;
+        this.status = status;
+        this.owner = owner;
+        this.createddate = createddate;
+    }
+
+    public LeaveRequest() {
+    }
+
+    
+    
     public String getTitle() {
         return title;
     }
@@ -36,19 +52,19 @@ public class LeaveRequest extends BaseEntity{
         this.reason = reason;
     }
 
-    public Date getFrom() {
+    public String getFrom() {
         return from;
     }
 
-    public void setFrom(Date from) {
+    public void setFrom(String from) {
         this.from = from;
     }
 
-    public Date getTo() {
+    public String getTo() {
         return to;
     }
 
-    public void setTo(Date to) {
+    public void setTo(String to) {
         this.to = to;
     }
 
@@ -59,20 +75,24 @@ public class LeaveRequest extends BaseEntity{
     public void setStatus(int status) {
         this.status = status;
     }
-    
-    public Employee getOwner() {
+
+    public int getOwner() {
         return owner;
     }
 
-    public void setOwner(Employee owner) {
+    public void setOwner(int owner) {
         this.owner = owner;
     }
 
-    public java.util.Date getCreateddate() {
+    public String getCreateddate() {
         return createddate;
     }
 
-    public void setCreateddate(java.util.Date createddate) {
+    public void setCreateddate(String createddate) {
         this.createddate = createddate;
     }
+    
+    
 }
+    
+   
