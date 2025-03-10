@@ -28,6 +28,10 @@
         <servlet-name>AgendaController</servlet-name>
         <servlet-class>controller.agenda.AgendaController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteLeave</servlet-name>
+        <servlet-class>controller.leaverequest.DeleteLeave</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UpdateUser</servlet-name>
         <url-pattern>/user/update</url-pattern>
@@ -38,7 +42,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CreateUser</servlet-name>
-        <url-pattern>/create</url-pattern>
+        <url-pattern>/user/create</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ListUser</servlet-name>
@@ -64,10 +68,14 @@
         <servlet-name>AgendaController</servlet-name>
         <url-pattern>/agenda</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteLeave</servlet-name>
+        <url-pattern>/leaverequest/deleteLeave</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>Login.html</welcome-file>
+        <welcome-file>view/Login.html</welcome-file>
     </welcome-file-list>
 </web-app>

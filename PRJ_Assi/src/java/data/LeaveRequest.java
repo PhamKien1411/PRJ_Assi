@@ -5,7 +5,6 @@
 package data;
 
 import java.util.Date;
-import java.sql.*;
 /**
  *
  * @author ADM
@@ -13,29 +12,13 @@ import java.sql.*;
 public class LeaveRequest extends BaseEntity{
     private String title;
     private String reason;
-    private String from;
-    private String to;
+    private Date from;
+    private Date to;
     private int status;
 
     
-    private int owner;
-    private String createddate;
-
-    public LeaveRequest(String title, String reason, String from, String to, int status, int owner, String createddate) {
-        this.title = title;
-        this.reason = reason;
-        this.from = from;
-        this.to = to;
-        this.status = status;
-        this.owner = owner;
-        this.createddate = createddate;
-    }
-
-    public LeaveRequest() {
-    }
-
-    
-    
+    private Employee owner;
+    private java.util.Date createddate;
     public String getTitle() {
         return title;
     }
@@ -52,19 +35,19 @@ public class LeaveRequest extends BaseEntity{
         this.reason = reason;
     }
 
-    public String getFrom() {
+    public Date getFrom() {
         return from;
     }
 
-    public void setFrom(String from) {
+    public void setFrom(Date from) {
         this.from = from;
     }
 
-    public String getTo() {
+    public Date getTo() {
         return to;
     }
 
-    public void setTo(String to) {
+    public void setTo(Date to) {
         this.to = to;
     }
 
@@ -75,24 +58,20 @@ public class LeaveRequest extends BaseEntity{
     public void setStatus(int status) {
         this.status = status;
     }
-
-    public int getOwner() {
+    
+    public Employee getOwner() {
         return owner;
     }
 
-    public void setOwner(int owner) {
+    public void setOwner(Employee owner) {
         this.owner = owner;
     }
 
-    public String getCreateddate() {
+    public java.util.Date getCreateddate() {
         return createddate;
     }
 
-    public void setCreateddate(String createddate) {
+    public void setCreateddate(java.util.Date createddate) {
         this.createddate = createddate;
     }
-    
-    
 }
-    
-   

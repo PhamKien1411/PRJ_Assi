@@ -8,7 +8,6 @@ package controller.agenda;
 import dal.AgendaDBContext;
 import data.Agenda;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +26,7 @@ public class AgendaController extends HttpServlet {
          AgendaDBContext db = new AgendaDBContext();
         ArrayList<Agenda> agendaList = db.list();
         request.setAttribute("agendaList", agendaList);
-      request.getRequestDispatcher("agendaView.jsp").forward(request, response);
+        request.getRequestDispatcher("view/agendaView.jsp").forward(request, response);
     }
 
     @Override

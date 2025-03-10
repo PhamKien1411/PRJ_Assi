@@ -11,7 +11,6 @@ import data.Employee;
 import data.User;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,44 +24,35 @@ public class LoginController extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         UsersDBContext db = new UsersDBContext();
         User user = db.get(username, password);
-        if (user != null) {
+        
+        if(user != null){
+            
             EmployeeDBContext demp = new EmployeeDBContext();
             Employee profile = demp.get(user.getEmployee().getId());
             user.setEmployee(profile);
-            /*-------------------------------------------*/
+            /*-------------------------------------------*/           
             HttpSession session = request.getSession();
             session.setAttribute("user", user); // Lưu thông tin user vào session
-            if (user.hasRole("Nhân viên")|| user.hasRole("Trưởng phòng")){
-                response.sendRedirect("leaverequest/create");
-            } else {
-                 response.sendRedirect("agenda");
+            if(user.hasRole("Boss")|| user.hasRole("Lãnh Đạo")){
+                response.sendRedirect("/Prj_kien/view/agendaView.jsp");
+            }else{
+             response.sendRedirect("leaverequest/create");   
             }
-
-        } else {
+            
+        }else{
             response.getWriter().println("Login Failse! Please try again");
         }
-
-
-//          if(user.hasRole("Lãnh d?o")){
-//              response.sendRedirect("agenda");
-//          }else if(user.hasRole("Nhân viên") || user.hasRole("Tru?ng phòng")){
-//              response.sendRedirect("leaverequest/create");
-//          }else{
-//            response.getWriter().println("Login Failse! Please try again");
-//        }
-//        }else{
-//            response.getWriter().println("Login Failse! Please try again");
-//    }
     }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-     request.getRequestDispatcher("Login.html").forward(request, response);
+     request.getRequestDispatcher("view/Login.html").forward(request, response);
     } 
     
 

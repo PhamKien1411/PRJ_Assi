@@ -21,7 +21,7 @@ public abstract class BaseAccessControlByCreator<T extends BaseEntity> extends B
     
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
-        T entity = getEntity(Integer.parseInt(req.getParameter("id")));
+        T entity = getEntity(Integer.parseInt(req.getParameter("rid")));
         if(isAccessed(entity, user))
         {
             doPost(req, resp, user, entity);
