@@ -54,7 +54,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         } catch (SQLException ex) {
             Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return requests; // ✅ Trả về danh sách hợp lệ
+        return requests; 
     }
 
     public List<LeaveRequest> getByCreator(String creator) {
@@ -100,40 +100,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         System.out.println(l.get(3).getCreatedby());
         
     }
-//    public LeaveRequest getLeave(int id) {
-//        try {
-//            String sql = "select * from leaveRequest where [id_LeaveRequest] = ?";
-//            PreparedStatement stm = connection.prepareStatement(sql);
-//            stm.setInt(1, id);
-//            ResultSet rs = stm.executeQuery();
-//            if (rs.next()) {
-//                LeaveRequest lr = new LeaveRequest();
-//                lr.setId(rs.getInt("id_LeaveRequest"));
-//                lr.setTitle(rs.getString("title"));
-//                lr.setReason(rs.getString("reason"));
-//                lr.setFrom(rs.getDate("from_date"));
-//                lr.setTo(rs.getDate("to_date"));
-//                lr.setStatus(rs.getInt("status"));
-//                lr.setCreateddate(rs.getTimestamp("createddate"));
-//
-//                // Set người tạo
-//                User user = new User();
-//                user.setUsername(rs.getString("createBy"));
-//                lr.setCreatedby(user);
-//
-//                // Set người sở hữu
-//                Employee owner = new Employee();
-//                owner.setId(rs.getInt("owner_eid"));
-//                lr.setOwner(owner);
-//                return lr;
-//            }
-//
-//        } catch (SQLException ex) {
-//            System.out.println(ex);
-//           
-//        }
-//         return null;
-//    }
+
 
 
     public List<LeaveRequest> getByCreatorNotCnfirm(String creator) {

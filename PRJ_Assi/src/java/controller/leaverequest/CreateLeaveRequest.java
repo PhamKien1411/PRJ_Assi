@@ -40,7 +40,7 @@ public class CreateLeaveRequest extends BaseRequiredAuthenticationController {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException, IOException {
-        if (user.hasRole("Boss") && user.hasRole("Lãnh Đạo")) {
+        if (user.hasRole("Boss") && user.hasRole("Lãnh đạo")) {
             
            
         } else {

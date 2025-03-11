@@ -16,6 +16,9 @@ public class Agenda {
     private String employeeName;
     private String attendanceDate;
     private String status;
+
+    public Agenda() {
+    }
     
      public Agenda(int id, int employeeId, String employeeName, String attendanceDate, String status) {
         this.id = id;

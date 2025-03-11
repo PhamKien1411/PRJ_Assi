@@ -80,7 +80,6 @@
                     <th>From_date</th>
                     <th>To_Date</th>
                     <th>created_Date</th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <c:forEach items="${requestScope.listNot}" var="i">
@@ -90,8 +89,7 @@
                     <td>${i.from}</td>
                     <td>${i.to}</td>
                     <td>${i.createddate}</td>
-                    <td ><a href="#" onclick="deleteClick(${i.id})">Delete</a>
-                        <a href="deleteLeave?action=update&id=${i.id}">update</a></td>
+                    
 
                 </tr>
             </c:forEach>

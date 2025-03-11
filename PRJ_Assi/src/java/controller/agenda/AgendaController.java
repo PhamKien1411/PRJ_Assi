@@ -23,8 +23,8 @@ public class AgendaController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         // Kiểm tra session
-         AgendaDBContext db = new AgendaDBContext();
-        ArrayList<Agenda> agendaList = db.list();
+        AgendaDBContext db = new AgendaDBContext();
+        ArrayList<Agenda> agendaList = db.listEmployee();
         request.setAttribute("agendaList", agendaList);
         request.getRequestDispatcher("view/agendaView.jsp").forward(request, response);
     }

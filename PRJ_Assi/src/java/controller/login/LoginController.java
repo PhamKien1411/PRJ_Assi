@@ -35,11 +35,11 @@ public class LoginController extends HttpServlet {
             EmployeeDBContext demp = new EmployeeDBContext();
             Employee profile = demp.get(user.getEmployee().getId());
             user.setEmployee(profile);
-            /*-------------------------------------------*/           
+                     
             HttpSession session = request.getSession();
             session.setAttribute("user", user); // Lưu thông tin user vào session
-            if(user.hasRole("Boss")|| user.hasRole("Lãnh Đạo")){
-                response.sendRedirect("/Prj_kien/view/agendaView.jsp");
+            if(user.hasRole("Boss")|| user.hasRole("Lãnh đạo")){
+                response.sendRedirect("agenda");
             }else{
              response.sendRedirect("leaverequest/create");   
             }

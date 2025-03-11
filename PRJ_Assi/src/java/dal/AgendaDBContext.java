@@ -24,34 +24,20 @@ import java.util.logging.Logger;
 public class AgendaDBContext extends DBContext<Agenda> {
 
 
-    public ArrayList<Agenda> list() {
+    public ArrayList<Agenda> listEmployee() {
         ArrayList<Agenda> agenda = new ArrayList<>();
         try {
-            String sql = """
-                    SELECT ea.id_Attendance, e.id_Employee, e.name_Employee, ea.attendance_date, ea.status 
-                                         FROM Employee_Attendance ea 
-                                         JOIN Employees e ON ea.id_Employee = e.id_Employee
-                    """;
+            String sql ="SELECT DISTINCT id_Employee\n" +
+"FROM Employee_Attendance";
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                agenda.add(new Agenda(
-                        rs.getInt("id_Attendance"),
-                        rs.getInt("id_Employee"),
-                        rs.getString("name_Employee"),
-                        rs.getString("attendance_date"),
-                        rs.getString("status")
-                ));
+                Agenda a = new Agenda();
+                a.setEmployeeId( rs.getInt("id_Employee"));
+                agenda.add(a);
             }
         } catch (SQLException ex) {
             Logger.getLogger(AgendaDBContext.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (connection != null)
-                try {
-                connection.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(AgendaDBContext.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
         return agenda;
     }
@@ -75,6 +61,11 @@ public class AgendaDBContext extends DBContext<Agenda> {
 
     @Override
     public void delete(Agenda model) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public ArrayList<Agenda> list() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
