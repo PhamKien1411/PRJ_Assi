@@ -4,101 +4,100 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 
-<%
-    Calendar calendar = Calendar.getInstance();
-%>
-
 <html>
-<head>
-    <title>Agenda Giám Sát Nhân Viên</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            text-align: center;
-        }
-        
-        .box {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            border-radius: 10px;
-            font-size: 50px;
-            font-weight: bold;
-            
-        }
+    <head>
+        <title>Agenda Giám Sát Nhân Viên</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f5f5f5;
+                text-align: center;
+            }
 
-        .text2 {
-            font-size: 30px;
-            margin-bottom: 20px;
-        }
+            .box {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+                border-radius: 10px;
+                font-size: 50px;
+                font-weight: bold;
+            }
 
-        table {
-            width: 80%;
-            margin: auto;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            
-        }
+            .text2 {
+                font-size: 30px;
+                margin-bottom: 20px;
+            }
 
-        th, td {
-            border: 2px solid black;
-            text-align: center;
-            padding: 12px;
-        }
+            table {
+                width: 80%;
+                margin: auto;
+                border-collapse: collapse;
+                background: white;
+                border-radius: 10px;
+                overflow: hidden;
+            }
 
-        th {
-            background-color: brown;
-            color: white;
-        }
+            th, td {
+                border: 2px solid black;
+                text-align: center;
+                padding: 12px;
+            }
 
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
+            th {
+                background-color: brown;
+                color: white;
+            }
 
-        .working {
-            background-color: chartreuse;
-        }
+            tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+        </style>
+    </head>
+    <body>
 
-        .leave {
-            background-color: red;
-            color: white;
-        }
-    </style>
-</head>
-<body>
+        <h1 class="box">
+            Hello ${sessionScope.user.displayname}
+        </h1>
 
-    <h1 class="box">
-        Hello ${sessionScope.user.displayname}
-    </h1>
+        <h2 class="text2">Agenda Giám Sát Nhân Viên</h2>
 
-    <h2 class="text2">Agenda Giám Sát Nhân Viên</h2>
+        <form action="agenda" method="post">
+            <table>
+                <tr>
+                    <th>Nhân sự</th> 
+                        <c:forEach var="day" items="${dateList}">
+                        <th>${day}</th>
+                        </c:forEach>
+                </tr>
 
-    <table>
-        <tr>
-            <th>Nhân sự</th> 
-            <c:forEach var="i" begin="0" end="4">
-                <th>
-                    <fmt:formatDate value="<%= calendar.getTime() %>" pattern="d" var="currentDay"/>
-                    ${currentDay + i}/
-                    <fmt:formatDate value="<%= calendar.getTime() %>" pattern="M"/>
-                </th>
-            </c:forEach>
-        </tr>
+                <c:forEach items="${sessionScope.user.employee.staffs}" var="s">
+                    <tr>
+                        <td>${s.name}</td>
 
-        <c:forEach items="${sessionScope.user.employee.staffs}" var="s">
-            <tr>
-                <td>${s.name}</td>
-                <c:forEach var="i" begin="0" end="4">
-                    <td></td> <%-- Các ô trống để nhập trạng thái làm việc --%>
+                        <c:forEach var="day" items="${dateList}">
+                            <c:set var="checkDate" value="${day}" />
+
+                            <c:set var="isChecked" value="false" />
+                            <c:forEach items="${requestScope.agendaList}" var="att">
+                                <c:if test="${att.employeeId eq s.id and att.attendanceDate eq checkDate}">
+                                    <c:set var="isChecked" value="true" />
+                                </c:if>
+                            </c:forEach>
+
+                            <td>
+                                <input type="checkbox" name="attendance"
+                                       value="${s.id},${checkDate}" ${isChecked eq 'true' ? 'checked' : ''} />
+                            </td>
+
+                        </c:forEach>
+                    </tr>
                 </c:forEach>
-            </tr>
-        </c:forEach>
-            
-    </table>
-   <input type="submit" value="Save"/> 
-</body>
+
+            </table>
+
+            <button type="submit">Save</button>
+        </form>
+
+    </body>
 </html>

@@ -7,12 +7,11 @@ package dal;
 import data.Agenda;
 import data.Employee;
 import data.LeaveRequest;
-import data.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,26 +22,86 @@ import java.util.logging.Logger;
  */
 public class AgendaDBContext extends DBContext<Agenda> {
 
-
-    public ArrayList<Agenda> listEmployee() {
+    public ArrayList<Agenda> list() {
         ArrayList<Agenda> agenda = new ArrayList<>();
         try {
-            String sql ="SELECT DISTINCT id_Employee\n" +
-"FROM Employee_Attendance";
+            String sql = """
+                    SELECT ea.id_Attendance, e.id_Employee, e.name_Employee, ea.attendance_date, ea.status 
+                    FROM Employee_Attendance ea 
+                    JOIN Employees e ON ea.id_Employee = e.id_Employee 
+                    ORDER BY e.id_Employee ASC, ea.attendance_date ASC
+                    """;
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                Agenda a = new Agenda();
-                a.setEmployeeId( rs.getInt("id_Employee"));
-                agenda.add(a);
+                agenda.add(new Agenda(
+                        rs.getInt("id_Attendance"),
+                        rs.getInt("id_Employee"),
+                        rs.getString("name_Employee"),
+                        rs.getString("attendance_date"),
+                        rs.getString("status")
+                ));
             }
         } catch (SQLException ex) {
             Logger.getLogger(AgendaDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (connection != null)
+                try {
+                connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AgendaDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return agenda;
     }
+public void saveAttendance(ArrayList<Agenda> attendances) {
+    PreparedStatement stm = null;
+    try {
+        String sql = """
+            MERGE INTO Employee_Attendance AS target
+            USING (SELECT ? AS id_Employee, ? AS attendance_date, ? AS status) AS source
+            ON target.id_Employee = source.id_Employee AND target.attendance_date = source.attendance_date
+            WHEN MATCHED THEN 
+                UPDATE SET target.status = source.status
+            WHEN NOT MATCHED THEN 
+                INSERT (id_Employee, attendance_date, status) VALUES (source.id_Employee, source.attendance_date, source.status);
+        """;
 
-   
+        stm = connection.prepareStatement(sql);
+
+        for (Agenda att : attendances) {
+            stm.setInt(1, att.getEmployeeId());
+            stm.setString(2, att.getAttendanceDate());
+            stm.setString(3, att.getStatus());
+            stm.addBatch(); // Thêm vào batch để giảm số lần gọi SQL
+        }
+
+        int[] affectedRows = stm.executeBatch(); // Chạy tất cả lệnh INSERT/UPDATE một lần
+        System.out.println("Số dòng bị ảnh hưởng: " + Arrays.toString(affectedRows));
+
+    } catch (SQLException ex) {
+        ex.printStackTrace(); // In lỗi SQL ra console
+    } finally {
+        try {
+            if (stm != null) stm.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+}
+
+    public static void main(String[] args) {
+        ArrayList<Agenda> attendances = new  ArrayList<>();
+        Agenda a = new Agenda();
+        a.setEmployeeId(2);
+        a.setAttendanceDate("2025-11-11");
+        a.setStatus("working");
+            attendances.add(a); 
+
+        AgendaDBContext d = new AgendaDBContext();
+        d.saveAttendance(attendances);
+    }
+
 
     @Override
     public Agenda get(int id) {
@@ -61,11 +120,6 @@ public class AgendaDBContext extends DBContext<Agenda> {
 
     @Override
     public void delete(Agenda model) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public ArrayList<Agenda> list() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

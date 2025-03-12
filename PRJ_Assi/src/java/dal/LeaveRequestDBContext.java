@@ -54,7 +54,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         } catch (SQLException ex) {
             Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return requests; 
+        return requests; //Trả về danh sách hợp lệ
     }
 
     public List<LeaveRequest> getByCreator(String creator) {
@@ -100,9 +100,6 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         System.out.println(l.get(3).getCreatedby());
         
     }
-
-
-
     public List<LeaveRequest> getByCreatorNotCnfirm(String creator) {
         List<LeaveRequest> requests = new ArrayList<>();
         try {

@@ -70,13 +70,7 @@ public class UsersDBContext extends DBContext<User>{
        
        
        while(rs.next()){ 
-      /* if(rs.next()){
-           User u = new User();
-           u.setUsername(username);
-           u.setDisplayname(rs.getString("displayname"));
-           return u;           
-       }*/
-       
+
        if (user == null) {
         //Khởi tạo đối tượng User, gán username và displayname   
                     user = new User();

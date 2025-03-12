@@ -9,16 +9,11 @@ package data;
  * @author ADM
  */
 public class Agenda {
-
-   
     private int id;
     private int employeeId;
     private String employeeName;
     private String attendanceDate;
     private String status;
-
-    public Agenda() {
-    }
     
      public Agenda(int id, int employeeId, String employeeName, String attendanceDate, String status) {
         this.id = id;
@@ -26,6 +21,9 @@ public class Agenda {
         this.employeeName = employeeName;
         this.attendanceDate = attendanceDate;
         this.status = status;
+    }
+
+    public Agenda() {
     }
 
     public int getId() {

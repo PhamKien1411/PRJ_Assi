@@ -47,7 +47,6 @@ public class EmployeeDBContext extends DBContext<Employee> {
     @Override
     public Employee get(int id) {
         ArrayList<Employee> employees = new ArrayList<>();
-        //Một danh sách Employees được tạo để chứa dữ liệu nhân viên lấy từ cơ sở dữ liệu.
         try {
 
             String sql = """
@@ -65,7 +64,7 @@ public class EmployeeDBContext extends DBContext<Employee> {
             //PreparedStatement được dùng để ngăn ngừa SQL Injection.
             //Giúp ngăn chặn việc bị phá hủy cơ sở dữ liệu, tránh bị hack và mã độc 
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setInt(1, id);//đặt giá trị id vào dấu ? trong truy vấn SQL.
+            stm.setInt(1, id);
             stm.setInt(2, id);
             ResultSet rs = stm.executeQuery();//thực thi truy vấn và nhận kết quả.
 /*-----------------------------------------------------------------------------------------*/

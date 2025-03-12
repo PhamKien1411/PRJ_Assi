@@ -59,7 +59,7 @@ CREATE TABLE Roles (
     id_Roles INT PRIMARY KEY,
     name_Roles nVARCHAR(150)
 );
-
+select * from Roles
 -- Bảng trung gian User_Role để liên kết Users và Roles
 CREATE TABLE User_Role (
     username VARCHAR(150) NOT NULL,
@@ -188,11 +188,16 @@ INSERT INTO Employee_Attendance (id_Employee, attendance_date, status) VALUES
 (6, '2025-03-06', 'working'),
 (6, '2025-03-07', 'working');
 ----------------------------------------------------------------
+select * from Employee_Attendance
 
+SELECT DISTINCT id_Employee
+FROM Employee_Attendance;
 
-
-
-
+ALTER TABLE Employee_Attendance
+ADD CONSTRAINT unique_attendance UNIQUE (id_Employee, attendance_date);
+UPDATE Employees
+SET managerid = 1
+WHERE managerid IS NOT NULL;
 
 
 SELECT 
@@ -246,12 +251,14 @@ WITH employee_hierarchy AS (
 )
 
 SELECT e.id_Employee as [staffid], 
-       staff.name_Employee as [staffname],
-       e.managerid as [ID quản lí],
-       manager.name_Employee as [Tên quản lý],
-       d.id_Department as [Mã phòng ban],
-       d.name_Department as [Tên phòng ban]
+       staff.name_Employee,
+       e.managerid,
+       manager.name_Employee ,
+       d.id_Department ,
+       d.name_Department 
 FROM employee_hierarchy e INNER JOIN Employees staff ON staff.id_Employee = e.id_Employee
                           INNER JOIN Department d ON d.id_Department = staff.id_Department
                           LEFT JOIN Employees manager ON e.managerid = manager.id_Employee
 Order by e.id_Employee asc;
+
+
