@@ -30,6 +30,11 @@ public class AgendaController extends HttpServlet {
         request.setAttribute("agendaList", agendaList);
         // 1. Lấy ngày hiện tại
         Calendar calendar = Calendar.getInstance();
+         while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
+    }
+        
+        
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Định dạng yyyy-MM-dd
 
         // 2. Tạo danh sách 5 ngày tiếp theo
