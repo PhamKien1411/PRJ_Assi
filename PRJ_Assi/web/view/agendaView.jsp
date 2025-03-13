@@ -52,6 +52,26 @@
             tr:nth-child(even) {
                 background-color: #f9f9f9;
             }
+            input[type="submit"] {
+                margin-top: 10px;
+                padding: 8px 15px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            input[type="submit"]:hover {
+                background-color: #0056b3;
+            }
+            
+            .submit-container {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                margin-top: 10px;
+            
         </style>
     </head>
     <body>
@@ -95,8 +115,9 @@
                 </c:forEach>
 
             </table>
-
+            <div class="submit-container">
             <button type="submit">Save</button>
+            </div>
         </form>
 
     </body>

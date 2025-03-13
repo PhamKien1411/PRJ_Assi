@@ -92,14 +92,6 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         }
         return requests;
     }
-    public static void main(String[] args) {
-        List<LeaveRequest> l = new LeaveRequestDBContext().getByCreator("mra");
-        for (LeaveRequest leaveRequest : l) {
-            System.out.println(leaveRequest.getId());
-        }
-        System.out.println(l.get(3).getCreatedby());
-        
-    }
     public List<LeaveRequest> getByCreatorNotCnfirm(String creator) {
         List<LeaveRequest> requests = new ArrayList<>();
         try {

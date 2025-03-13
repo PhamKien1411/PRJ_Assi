@@ -24,20 +24,26 @@ import java.util.ArrayList;
 public class CreateLeaveRequest extends BaseRequiredAuthenticationController {
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
+        try{
         LeaveRequest lr = new LeaveRequest();
         lr.setTitle(req.getParameter("title"));
         lr.setReason(req.getParameter("reason"));
         lr.setFrom(Date.valueOf(req.getParameter("from_date")));
         lr.setTo(Date.valueOf(req.getParameter("to_date")));
+        
         Employee owner = new Employee();
         owner.setId(Integer.parseInt(req.getParameter("ownerid_Employee")));
         lr.setOwner(owner);
         lr.setCreatedby(user);
+        
         LeaveRequestDBContext db = new LeaveRequestDBContext();
         db.insert(lr);
-        
+            req.getSession().setAttribute("message", "Đơn xin nghỉ đã được tạo thành công!");
+        } catch (Exception e) {
+            req.getSession().setAttribute("message", "Lỗi! Không thể tạo đơn xin nghỉ.");
+        }
+        resp.sendRedirect(req.getContextPath() + "/view/leaverequest/createleave.jsp");
     }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException, IOException {
         if (user.hasRole("Boss") && user.hasRole("Trưởng phòng")) {

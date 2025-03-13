@@ -27,11 +27,9 @@ public abstract class DBContext<T> {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(url, user, pass);
             System.out.println("Kết nối thành công!");
-        } catch (ClassNotFoundException ex) {
-            System.out.println("Không tìm thấy driver SQL Server!");
+        } catch(ClassNotFoundException ex) {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            System.out.println("Lỗi kết nối database: " + ex.getMessage());
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

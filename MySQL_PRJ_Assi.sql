@@ -18,6 +18,11 @@ create table Employees(
     FOREIGN KEY (id_Department) REFERENCES Department(id_Department),
     FOREIGN KEY (managerid) REFERENCES Employees(id_Employee)
 );
+ALTER TABLE Employees
+ADD manager_by_id INT;
+
+ALTER TABLE Employees
+ADD CONSTRAINT FK_Manager_By FOREIGN KEY (manager_by_id) REFERENCES Employees(id_Employee);
 
 
 -- Tạo bảng Employee_Attendance (Chấm công)
@@ -98,6 +103,11 @@ INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) v
 INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) VALUES (8, N'Mrs.E', 3, 7)
 INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) VALUES (9, N'Mrs.F', 3, 7)
 INSERT into Employees (id_Employee, name_Employee, id_Department, [managerid]) VALUES (10, N'Mrs.G', 3, 7)
+UPDATE Employees 
+SET manager_by_id = 1 
+WHERE id_Employee = 7; 
+
+select * from Employees
 
 
 ------tạo bảng insert into của bảng Users
@@ -146,14 +156,16 @@ INSERT into Features(id_Feature, url_Feature) VALUES (1, N'/user/agenda')
 INSERT into Features(id_Feature, url_Feature) VALUES (2, N'/leaverequest/create')
 INSERT into Features(id_Feature, url_Feature) VALUES (3, N'/leaverequest/update')
 INSERT into Features(id_Feature, url_Feature) VALUES (4, N'/leaverequest/view')
-
+INSERT into Features(id_Feature, url_Feature) VALUES (5, N'/leaverequest/duyetdonnghi')
 
 ------------------bảng insert into Role_Feature
 insert into Role_Feature(id_Roles,id_Feature) values (1,1)
+insert into Role_Feature(id_Roles,id_Feature) values (1,5)
 
 insert into Role_Feature(id_Roles,id_Feature) values (2,2)
 insert into Role_Feature(id_Roles,id_Feature) values (2,3)
 insert into Role_Feature(id_Roles,id_Feature) values (2,4)
+insert into Role_Feature(id_Roles,id_Feature) values (2,5)
 
 insert into Role_Feature(id_Roles,id_Feature) values (3,2)
 insert into Role_Feature(id_Roles,id_Feature) values (3,3)
@@ -162,31 +174,7 @@ insert into Role_Feature(id_Roles,id_Feature) values (3,4)
 INSERT into Department (id_Department, name_Department) VALUES (1, N'IT')
 INSERT into Department (id_Department, name_Department) VALUES (3, N'Marketing')
 
-INSERT INTO Employee_Attendance (id_Employee, attendance_date, status) VALUES
-(3, '2025-03-03', 'working'),
-(3, '2025-03-04', 'working'),
-(3, '2025-03-05', 'working'),
-(3, '2025-03-06', 'leave'),
-(3, '2025-03-07', 'working'),
 
-(4, '2025-03-03', 'working'),
-(4, '2025-03-04', 'leave'),
-(4, '2025-03-05', 'working'),
-(4, '2025-03-06', 'leave'),
-(4, '2025-03-07', 'working'),
-
-
-(5, '2025-03-03', 'working'),
-(5, '2025-03-04', 'working'),
-(5, '2025-03-05', 'leave'),
-(5, '2025-03-06', 'leave'),
-(5, '2025-03-07', 'working'),
-
-(6, '2025-03-03', 'leave'),
-(6, '2025-03-04', 'leave'),
-(6, '2025-03-05', 'working'),
-(6, '2025-03-06', 'working'),
-(6, '2025-03-07', 'working');
 ----------------------------------------------------------------
 select * from Employee_Attendance
 

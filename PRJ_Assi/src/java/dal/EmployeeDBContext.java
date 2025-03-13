@@ -75,6 +75,7 @@ public class EmployeeDBContext extends DBContext<Employee> {
                 e.setId(rs.getInt("staffid"));
                 e.setName(rs.getString("staffname"));
                 int managerid = rs.getInt("managerid");
+                int manager_by_id = rs.getInt("manager_by_id");
 
                 //Nếu nhân viên có managerid ≠ 0, 
                 //thì tạo đối tượng Employee làm quản lý (Manager).
@@ -84,6 +85,12 @@ public class EmployeeDBContext extends DBContext<Employee> {
                     m.setName(rs.getString("mananame"));
                     e.setManager(m);
                 }
+                if (manager_by_id != 0) {
+                    Employee m = new Employee();
+                    m.setId(rs.getInt("manager_by_id"));
+                    m.setName(rs.getString("mananame"));
+                    e.setManager_by_id(m);
+                }
                 //Tạo đối tượng Department để lưu thông tin về phòng ban(Department).
                 Department d = new Department();
                 d.setId(rs.getInt("departid"));
@@ -91,6 +98,7 @@ public class EmployeeDBContext extends DBContext<Employee> {
                 e.setDept(d);
                 //Thêm nhân viên vào danh sách employees
                 employees.add(e);
+                
 
             }
         } catch (SQLException ex) {
