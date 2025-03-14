@@ -32,6 +32,10 @@
         <servlet-name>DeleteLeave</servlet-name>
         <servlet-class>controller.leaverequest.DeleteLeave</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ListLeave</servlet-name>
+        <servlet-class>controller.leaverequest.ListLeave</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UpdateUser</servlet-name>
         <url-pattern>/user/update</url-pattern>
@@ -70,7 +74,11 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DeleteLeave</servlet-name>
-        <url-pattern>/leaverequest/deleteLeave</url-pattern>
+        <url-pattern>/deleteLeave</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListLeave</servlet-name>
+        <url-pattern>/listLeave</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

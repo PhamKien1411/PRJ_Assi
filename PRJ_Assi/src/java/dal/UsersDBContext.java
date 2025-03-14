@@ -150,10 +150,7 @@ public class UsersDBContext extends DBContext<User>{
     public static void main(String[] args) {
         UsersDBContext db = new UsersDBContext();
         User user = db.get("kien", "1234");
-        EmployeeDBContext demp = new EmployeeDBContext();
-            Employee profile = demp.get(user.getEmployee().getId());
-            user.setEmployee(profile);
-        System.out.println(user.getEmployee().getStaffs().get(0));
+        System.out.println(user.getPassword());
     }
 }
 

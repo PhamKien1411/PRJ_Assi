@@ -34,6 +34,8 @@ CREATE TABLE Employee_Attendance (
     FOREIGN KEY (id_Employee) REFERENCES Employees(id_Employee)
 );
 
+DELETE FROM Role_Feature WHERE id_Roles = 1 AND id_Feature = 5;
+select * from Role_Feature
 ---Tạo bảng User
 CREATE TABLE Users (
     username VARCHAR(150) PRIMARY KEY,

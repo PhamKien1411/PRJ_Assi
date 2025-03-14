@@ -7,6 +7,7 @@ package controller.leaverequest;
 import dal.EmployeeDBContext;
 import dal.LeaveRequestDBContext;
 import data.Employee;
+import data.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,9 +18,9 @@ import java.util.ArrayList;
 
 /**
  *
- * @author ADMIN
+ * @author ADM
  */
-public class DeleteLeave extends HttpServlet {
+public class ListLeave extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +39,10 @@ public class DeleteLeave extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DeleteLeave</title>");
+            out.println("<title>Servlet ListLeave</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DeleteLeave at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ListLeave at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,19 +60,17 @@ public class DeleteLeave extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        LeaveRequestDBContext l = new LeaveRequestDBContext();
-        if ("delete".equals(request.getParameter("action"))) {
-            l.delete(id);
-            request.getRequestDispatcher("leaverequest/create?action=delete").forward(request, response);
+        User user = (User) request.getSession().getAttribute("user");
+        EmployeeDBContext db = new EmployeeDBContext();
+        LeaveRequestDBContext context = new LeaveRequestDBContext();
+        if ("1".equals(request.getParameter("list"))) {
+            request.setAttribute("list", context.getByCreatorNotCnfirm(user.getUsername()));
+            request.setAttribute("all", "all");
         } else {
-            EmployeeDBContext db = new EmployeeDBContext();
-            ArrayList<Employee> employees = db.list();
-            request.setAttribute("employees", employees);
-            request.setAttribute("leave", l.get(id));  
-            request.getRequestDispatcher("/view/leaverequest/updateleave.jsp").forward(request, response);
-        }
+            request.setAttribute("list", context.getByCreator(user.getUsername()));
 
+        }
+        request.getRequestDispatcher("\\view\\leaverequest\\viewleaverequest.jsp").forward(request, response);
     }
 
     /**

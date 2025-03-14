@@ -74,7 +74,7 @@
             .actions a:last-child {
                 background-color: green;
             }
-            
+
             .form-group {
                 display: flex;
                 align-items: center;
@@ -112,32 +112,42 @@
             input[type="submit"]:hover {
                 background-color: #0056b3;
             }
-            
+
             .submit-container {
                 width: 100%;
                 display: flex;
                 justify-content: center;
                 margin-top: 10px;
-}
-        </style>
-        
-        
-        
-    </head>
-    <script>
-        let deleteClick = (id) => {
-            if (confirm("Are you sure to delete id: " + id)) {
-                window.location = "deleteLeave?action=delete&id=" + id;
             }
+        </style>
+
+
+            <script>
+        let function1 = () => {
+           confirm("Delete Successfully" );
+        };
+         let function2 = () => {
+           confirm("Update Successfully" );
         };
     </script>
+    </head>
+
     <body>
-        
+        <c:if test="${requestScope.delete != null}">
+            <script>
+            function1();
+        </script>
+        </c:if>
+        <c:if test="${requestScope.update != null}">
+            <script>
+            function2();
+        </script>
+        </c:if>
         <h1 class="box">
             Hello ${sessionScope.user.displayname}
         </h1>
         <h2>Tạo đơn xin nghỉ phép</h2>
-        <form action="create" method="POST">
+        <form action="/PRJ_Assi/leaverequest/create" method="POST">
 
             <div class="form-group">
                 <label>Title:</label> 
@@ -172,47 +182,25 @@
                     </c:forEach>
                 </select>
             </div>
-            
-            
+
+
             <c:if test="${not empty sessionScope.message}">
                 <div style="color: green; font-weight: bold; text-align: center; padding: 10px;">
                     ${sessionScope.message}
                 </div>
                 <c:remove var="message" scope="session"/>
             </c:if>
-            
+
             <div class="submit-container">
                 <input type="submit" value="Send"/>
             </div>
 
-            
+
         </form>
-        <h2>Các đơn đã tạo</h2>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Reason</th>
-                    <th>From_date</th>
-                    <th>To_Date</th>
-                    <th>Status</th>
-                    <th>created_Date</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <c:forEach items="${requestScope.list}" var="i">
-                <tr>
-                    <td>${i.title}</td>
-                    <td>${i.reason}</td>
-                    <td>${i.from}</td>
-                    <td>${i.to}</td>
-                    <td>${i.status eq 0?"In progress"
-                          :i.status eq 1?"Approved":"Rejected"}</td>
-                    <td>${i.createddate}</td>
-                    <td ><a href="#" onclick="deleteClick(${i.id})">Delete</a>
-                        <a href="deleteLeave?action=update&id=${i.id}">update</a></td>
-                </tr>
-            </c:forEach>
-        </table>    
+
+        <button><a href="/PRJ_Assi/listLeave?list=1">Xem đơn đã tạo</a></button>
+        <button><a href="/PRJ_Assi/listLeave?list=2">Xem đơn duyệt</a></button>
+
+
     </body>
 </html>

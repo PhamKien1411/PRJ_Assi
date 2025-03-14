@@ -37,8 +37,7 @@ public class UpdateLeaveRequest extends BaseAccessControlByCreator<LeaveRequest>
         lr.setCreatedby(user);
         LeaveRequestDBContext db = new LeaveRequestDBContext();
         db.update(lr);
-            resp.sendRedirect("create");
-
+            resp.sendRedirect("create?action=update");
     }
 
     @Override

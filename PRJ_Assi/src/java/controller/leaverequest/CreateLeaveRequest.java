@@ -42,7 +42,7 @@ public class CreateLeaveRequest extends BaseRequiredAuthenticationController {
         } catch (Exception e) {
             req.getSession().setAttribute("message", "Lỗi! Không thể tạo đơn xin nghỉ.");
         }
-        resp.sendRedirect(req.getContextPath() + "/view/leaverequest/createleave.jsp");
+        resp.sendRedirect("http://localhost:9999/PRJ_Assi/login");
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException, IOException {
@@ -56,6 +56,12 @@ public class CreateLeaveRequest extends BaseRequiredAuthenticationController {
             LeaveRequestDBContext context = new LeaveRequestDBContext();
             request.setAttribute("listNot", context.getByCreatorNotCnfirm(user.getUsername()));
             request.setAttribute("list", context.getByCreator(user.getUsername()));
+            if("delete".equals(request.getParameter("action"))) {
+                request.setAttribute("delete", "delete");
+            }
+            if("update".equals(request.getParameter("action"))) {
+                request.setAttribute("update", "update");
+            }
             request.getRequestDispatcher("../view/leaverequest/createleave.jsp").forward(request, response);
         }
     }

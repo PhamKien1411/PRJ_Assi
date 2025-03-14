@@ -8,6 +8,7 @@ import data.Department;
 import data.Employee;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -43,7 +44,14 @@ public class EmployeeDBContext extends DBContext<Employee> {
         }
         return employees;
     }
+    public static void main(String[] args) {
+        EmployeeDBContext e = new EmployeeDBContext();
+        List<Employee> l = e.get(1).getStaffs();
+        for (Employee employee : l) {
+                    System.out.println(employee.getId());
 
+        }
+    }
     @Override
     public Employee get(int id) {
         ArrayList<Employee> employees = new ArrayList<>();
@@ -75,7 +83,7 @@ public class EmployeeDBContext extends DBContext<Employee> {
                 e.setId(rs.getInt("staffid"));
                 e.setName(rs.getString("staffname"));
                 int managerid = rs.getInt("managerid");
-                int manager_by_id = rs.getInt("manager_by_id");
+                int manager_by_id = rs.getInt(5);
 
                 //Nếu nhân viên có managerid ≠ 0, 
                 //thì tạo đối tượng Employee làm quản lý (Manager).
@@ -87,7 +95,7 @@ public class EmployeeDBContext extends DBContext<Employee> {
                 }
                 if (manager_by_id != 0) {
                     Employee m = new Employee();
-                    m.setId(rs.getInt("manager_by_id"));
+                    m.setId(rs.getInt(5));
                     m.setName(rs.getString("mananame"));
                     e.setManager_by_id(m);
                 }

@@ -66,7 +66,7 @@
         <div class="container">
             <h2>Update đơn</h2>
             <c:set value="${requestScope.leave}" var="i"></c:set>
-            <form action="update" method="post">
+            <form action="/PRJ_Assi/leaverequest/update" method="post">
                 <input type="hidden" name="rid" value="${i.id}" />
 
                 <div class="form-group">

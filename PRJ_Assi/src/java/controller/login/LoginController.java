@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 package controller.login;
+
 import dal.EmployeeDBContext;
 import dal.UsersDBContext;
 import data.Employee;
@@ -19,7 +20,7 @@ import jakarta.servlet.http.HttpSession;
  * @author ADM
  */
 public class LoginController extends HttpServlet {
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -27,29 +28,35 @@ public class LoginController extends HttpServlet {
         String password = request.getParameter("password");
         UsersDBContext db = new UsersDBContext();
         User user = db.get(username, password);
-        
+
         if (user != null) {
-            
+
             EmployeeDBContext demp = new EmployeeDBContext();
             Employee profile = demp.get(user.getEmployee().getId());
             user.setEmployee(profile);
-            /*-------------------------------------------*/            
+            /*-------------------------------------------*/
             HttpSession session = request.getSession();
             session.setAttribute("user", user); // Lưu thông tin user vào session
             if (user.getUsername().equals("kien")) {
                 response.sendRedirect("agenda");
             } else {
-                response.sendRedirect("leaverequest/create");                
-            }         
+                response.sendRedirect("leaverequest/create");
+            }
         } else {
-            response.getWriter().println("Login Failse! Please try again");
+            request.setAttribute("mess", "Username or Password is not exactly!!");
+            request.getRequestDispatcher("view/login.jsp").forward(request, response);
+
         }
     }
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("view/Login.html").forward(request, response);
-    }    
-    
+        if (request.getSession().getAttribute("user") != null) {
+            response.sendRedirect("leaverequest/create");
+        } else {
+            request.getRequestDispatcher("view/login.jsp").forward(request, response);
+        }
+    }
+
 }
