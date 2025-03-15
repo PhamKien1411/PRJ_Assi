@@ -45,7 +45,7 @@ CREATE TABLE Users (
 	FOREIGN KEY (id_Employee) REFERENCES Employees(id_Employee)
 
 );
-select  * from users
+
 
 CREATE TABLE LeaveRequest (
     id_LeaveRequest INT IDENTITY(1,1) PRIMARY KEY not null,
@@ -61,6 +61,10 @@ CREATE TABLE LeaveRequest (
     FOREIGN KEY (owner_eid) REFERENCES Employees(id_Employee) -- Đúng tên cột
 );
 
+ALTER TABLE LeaveRequest ALTER COLUMN title NVARCHAR(150) NOT NULL;
+ALTER TABLE LeaveRequest ALTER COLUMN reason NVARCHAR(150) NOT NULL;
+
+select * from LeaveRequest;
 -- Tạo bảng Roles
 CREATE TABLE Roles (
     id_Roles INT PRIMARY KEY,
@@ -109,7 +113,7 @@ UPDATE Employees
 SET manager_by_id = 1 
 WHERE id_Employee = 7; 
 
-select * from Employees
+
 
 
 ------tạo bảng insert into của bảng Users
@@ -133,8 +137,6 @@ insert into Roles(id_Roles,name_Roles) values(3,N'Nhân viên')
 
 
 
-
-
 -------tạo bảng insert into User_Role
 insert into User_Role(username,id_Roles) values (N'kien',1)
 insert into User_Role(username,id_Roles) values (N'john',2)
@@ -143,13 +145,9 @@ insert into User_Role(username,id_Roles) values (N'mra',3)
 insert into User_Role(username,id_Roles) values (N'mrb',3)
 insert into User_Role(username,id_Roles) values (N'mrc',3)
 insert into User_Role(username,id_Roles) values (N'mrd',3)
------------------
 insert into User_Role(username,id_Roles) values (N'mrse',3)
 insert into User_Role(username,id_Roles) values (N'mrsf',3)
 insert into User_Role(username,id_Roles) values (N'mrsg',3)
-
-select * from user_role
-
 
 
 
@@ -178,7 +176,7 @@ INSERT into Department (id_Department, name_Department) VALUES (3, N'Marketing')
 
 
 ----------------------------------------------------------------
-select * from Employee_Attendance
+
 
 SELECT DISTINCT id_Employee
 FROM Employee_Attendance;

@@ -38,7 +38,7 @@ public class LoginController extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("user", user); // Lưu thông tin user vào session
             if (user.getUsername().equals("kien")) {
-                response.sendRedirect("agenda");
+                response.sendRedirect("user/agenda");
             } else {
                 response.sendRedirect("leaverequest/create");
             }
@@ -52,10 +52,13 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getSession().getAttribute("user") != null) {
-            response.sendRedirect("leaverequest/create");
+       HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+                response.sendRedirect("user/agenda");
+
         } else {
-            request.getRequestDispatcher("view/login.jsp").forward(request, response);
+            request.getRequestDispatcher("view/Login.html").forward(request, response);
         }
     }
 

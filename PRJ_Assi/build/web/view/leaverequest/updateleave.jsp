@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Update đơn nghỉ phép</title>
+        <title>Update đơn</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -70,22 +70,22 @@
                 <input type="hidden" name="rid" value="${i.id}" />
 
                 <div class="form-group">
-                    <label for="title">Tiêu đề:</label>
+                    <label for="title">Title:</label>
                     <input type="text" id="title" name="title" value="${i.title}" />
                 </div>
 
                 <div class="form-group">
-                    <label for="reason">Lý do:</label>
+                    <label for="reason">Reason:</label>
                     <textarea id="reason" name="reason">${i.reason}</textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="from">Từ ngày:</label>
+                    <label for="from">From:</label>
                     <input type="date" id="from" name="from" value="${i.from}" />
                 </div>
 
                 <div class="form-group">
-                    <label for="to">Đến ngày:</label>
+                    <label for="to">To:</label>
                     <input type="date" id="to" name="to" value="${i.to}" />
                 </div>
 

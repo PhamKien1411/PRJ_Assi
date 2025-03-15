@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Tạo đơn nghỉ phép</title>
+        <title>Tạo đơn</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style>
             body {
@@ -119,6 +119,9 @@
                 justify-content: center;
                 margin-top: 10px;
             }
+            
+            
+            
         </style>
 
 
@@ -146,7 +149,7 @@
         <h1 class="box">
             Hello ${sessionScope.user.displayname}
         </h1>
-        <h2>Tạo đơn xin nghỉ phép</h2>
+        <h2>Tạo đơn</h2>
         <form action="/PRJ_Assi/leaverequest/create" method="POST">
 
             <div class="form-group">
@@ -160,12 +163,12 @@
             </div>
 
             <div class="form-group">
-                <label>From_date:</label> 
+                <label>From:</label> 
                 <input type="date" name="from_date"/>
             </div>
 
             <div class="form-group">
-                <label>To_Date:</label> 
+                <label>To:</label> 
                 <input type="date" name="to_date"/>
             </div>
             <div class="form-group">

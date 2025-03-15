@@ -31,14 +31,14 @@
                 <!-- Nếu user là director, chỉ hiển thị Agenda -->
                 <c:if test="${role.name eq 'Lãnh đạo'}">
                     <a href="${pageContext.request.contextPath}/user/agenda">Xem Agenda</a>
-                    <li><a href="${pageContext.request.contextPath}/view/leaverequest/duyetdonnghi.jsp">Duyệt đơn nghỉ phép</a></li>
+                    <li><a href="${pageContext.request.contextPath}/view/leaverequest/duyetdonnghi.jsp">Duyệt đơn</a></li>
                 </c:if>
 
                 <!-- Nếu user là division leader, hiển thị chức năng tạo, sửa, xem, duyệt đơn -->
                 <c:if test="${role.name eq 'Trưởng phòng'}">
-                    <li><a href="${pageContext.request.contextPath}/view/leaverequest/create.jsp">Tạo đơn nghỉ phép</a></li>
-                    <li><a href="${pageContext.request.contextPath}/view/leaverequest/view.jsp">Xem danh sách đơn nghỉ phép</a></li>
-                    <li><a href="${pageContext.request.contextPath}/view/leaverequest/approve.jsp">Duyệt đơn nghỉ phép</a></li>
+                    <li><a href="${pageContext.request.contextPath}/view/leaverequest/create.jsp">Tạo đơn</a></li>
+                    <li><a href="${pageContext.request.contextPath}/view/leaverequest/view.jsp">Xem danh sách đơn</a></li>
+                    <li><a href="${pageContext.request.contextPath}/view/leaverequest/approve.jsp">Duyệt đơn</a></li>
                 </c:if>
 
                 <!-- Nếu user là staff, chỉ có thể tạo, cập nhật và xem đơn -->

@@ -70,7 +70,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AgendaController</servlet-name>
-        <url-pattern>/agenda</url-pattern>
+        <url-pattern>/user/agenda</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DeleteLeave</servlet-name>

@@ -9,14 +9,14 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Xem đơn nghỉ phép</title>
-            <script>
-        let deleteClick = (id) => {
-            if (confirm("Are you sure to delete id: " + id)) {
-                window.location = "deleteLeave?action=delete&id=" + id;
-            }
-        };
-    </script>
+        <title>Xem đơn</title>
+        <script>
+    let deleteClick = (id) => {
+        if (confirm("Are you sure to delete id: " + id)) {
+            window.location = "deleteLeave?action=delete&id=" + id;
+        }
+    };
+        </script>
     </head>
     <body>
         <c:if test="${all == null}">
@@ -27,6 +27,7 @@
                     <th>Reason</th>
                     <th>From_date</th>
                     <th>To_Date</th>
+
                     <th>created_Date</th>
 
                 </tr>
@@ -38,8 +39,9 @@
                     <td>${i.from}</td>
                     <td>${i.to}</td>
                     <td>${i.createddate}</td>
-                    <td ><a href="#" onclick="deleteClick(${i.id})">Delete</a>
+                    <%--<td ><a href="#" onclick="deleteClick(${i.id})">Delete</a>
                         <a href="deleteLeave?action=update&id=${i.id}">update</a></td>
+                    --%>
                 </tr>
             </c:forEach>
 
@@ -75,8 +77,5 @@
             </c:forEach>
         </table>    
     </c:if>
-
-
-
 </body>
 </html>
