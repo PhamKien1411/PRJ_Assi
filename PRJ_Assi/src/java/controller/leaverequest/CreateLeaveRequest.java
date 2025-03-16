@@ -49,7 +49,7 @@ public class CreateLeaveRequest extends BaseRequiredAuthenticationController {
     protected void doGet(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException, IOException {
 
         if (user.hasRole("Lãnh đạo")) {
-            request.getRequestDispatcher("../view/leaverequest/createleave.jsp").forward(request, response);
+            request.getRequestDispatcher("../view/agendaView.jsp").forward(request, response);
         } else {
             EmployeeDBContext db = new EmployeeDBContext();
             ArrayList<Employee> employees = db.list();

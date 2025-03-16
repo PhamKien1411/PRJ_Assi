@@ -49,30 +49,31 @@
     </c:if>
 
     <c:if test="${all!= null}">
-        <h2>Các đơn đã tạo</h2>
+        <h2>Các đơn đã duyệt</h2>
         <table border="1">
             <thead>
                 <tr>
                     <th>Title</th>
-                    <th>Reason</th>
                     <th>From_date</th>
                     <th>To_Date</th>
+                    <th>Created By</th>
                     <th>Status</th>
                     <th>created_Date</th>
-                    <th>Action</th>
+                    <th>Processed By</th>
                 </tr>
             </thead>
             <c:forEach items="${requestScope.list}" var="i">
                 <tr>
                     <td>${i.title}</td>
-                    <td>${i.reason}</td>
                     <td>${i.from}</td>
                     <td>${i.to}</td>
+                    <td>${i.createdby.username}</td>                   
                     <td>${i.status eq 0?"In progress"
                           :i.status eq 1?"Approved":"Rejected"}</td>
                     <td>${i.createddate}</td>
-                    <td ><a href="#" onclick="deleteClick(${i.id})">Delete</a>
-                        <a href="deleteLeave?action=update&id=${i.id}">update</a></td>
+                    
+                    <td>${e.id eq sessionScope.user.employee.id}</td> <%--Processed By--%>
+                   
                 </tr>
             </c:forEach>
         </table>    

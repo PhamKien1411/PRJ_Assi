@@ -149,6 +149,7 @@
         <h1 class="box">
             Hello ${sessionScope.user.displayname}
         </h1>
+        
         <h2>Tạo đơn</h2>
         <form action="/PRJ_Assi/leaverequest/create" method="POST">
 
@@ -203,7 +204,9 @@
 
         <button><a href="/PRJ_Assi/listLeave?list=1">Xem đơn đã tạo</a></button>
         <button><a href="/PRJ_Assi/listLeave?list=2">Xem đơn duyệt</a></button>
-
+        <button>
+            <a href="http://localhost:9999/PRJ_Assi/">Back</a>
+        </button>
 
     </body>
 </html>

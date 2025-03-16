@@ -36,6 +36,10 @@
         <servlet-name>ListLeave</servlet-name>
         <servlet-class>controller.leaverequest.ListLeave</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LeaveApprovalController</servlet-name>
+        <servlet-class>controller.leaverequest.LeaveApprovalController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UpdateUser</servlet-name>
         <url-pattern>/user/update</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>ListLeave</servlet-name>
         <url-pattern>/listLeave</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LeaveApprovalController</servlet-name>
+        <url-pattern>/leaverequest/duyetdonnghi</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

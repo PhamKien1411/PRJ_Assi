@@ -37,9 +37,11 @@ public class LoginController extends HttpServlet {
             /*-------------------------------------------*/
             HttpSession session = request.getSession();
             session.setAttribute("user", user); // Lưu thông tin user vào session
-            if (user.getUsername().equals("kien")) {
-                response.sendRedirect("user/agenda");
-            } else {
+            if (user.getUsername().equals("kien")){
+                response.sendRedirect("rollLanhDao.jsp");
+            } else if (user.hasRole("Trưởng phòng")){
+            response.sendRedirect("rollTruongPhong.jsp");
+            }else{
                 response.sendRedirect("leaverequest/create");
             }
         } else {
@@ -52,10 +54,10 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         if (user != null) {
-                response.sendRedirect("user/agenda");
+            response.sendRedirect("user/agenda");
 
         } else {
             request.getRequestDispatcher("view/Login.html").forward(request, response);

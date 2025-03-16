@@ -2,8 +2,9 @@
 use User_PRJ_Assi
 
 
+
+
 ------tạo bảng Department(phòng ban)
-drop table Department
 create table Department(
    id_Department int primary key,
    name_Department varchar(150)
@@ -18,24 +19,17 @@ create table Employees(
     FOREIGN KEY (id_Department) REFERENCES Department(id_Department),
     FOREIGN KEY (managerid) REFERENCES Employees(id_Employee)
 );
-ALTER TABLE Employees
-ADD manager_by_id INT;
+--ALTER TABLE Employees
+--ADD manager_by_id INT;
 
-ALTER TABLE Employees
-ADD CONSTRAINT FK_Manager_By FOREIGN KEY (manager_by_id) REFERENCES Employees(id_Employee);
+--ALTER TABLE Employees
+--ADD CONSTRAINT FK_Manager_By FOREIGN KEY (manager_by_id) REFERENCES Employees(id_Employee);
 
 
--- Tạo bảng Employee_Attendance (Chấm công)
-CREATE TABLE Employee_Attendance (
-    id_Attendance INT IDENTITY(1,1) PRIMARY KEY,
-	id_Employee INT NOT NULL,
-    attendance_date DATE NOT NULL, -- Đổi `date` thành `attendance_date`
-    status VARCHAR(150) CHECK (status IN ('working', 'leave')) NOT NULL, -- SQL Server không hỗ trợ ENUM
-    FOREIGN KEY (id_Employee) REFERENCES Employees(id_Employee)
-);
 
-DELETE FROM Role_Feature WHERE id_Roles = 1 AND id_Feature = 5;
-select * from Role_Feature
+
+--DELETE FROM Role_Feature WHERE id_Roles = 1 AND id_Feature = 5;
+--select * from Role_Feature
 ---Tạo bảng User
 CREATE TABLE Users (
     username VARCHAR(150) PRIMARY KEY,
@@ -45,7 +39,14 @@ CREATE TABLE Users (
 	FOREIGN KEY (id_Employee) REFERENCES Employees(id_Employee)
 
 );
-
+-- Tạo bảng Employee_Attendance (Chấm công)
+CREATE TABLE Employee_Attendance (
+    id_Attendance INT IDENTITY(1,1) PRIMARY KEY,
+	id_Employee INT NOT NULL,
+    attendance_date DATE NOT NULL, -- Đổi `date` thành `attendance_date`
+    status VARCHAR(150) CHECK (status IN ('working', 'leave')) NOT NULL, -- SQL Server không hỗ trợ ENUM
+    FOREIGN KEY (id_Employee) REFERENCES Employees(id_Employee)
+);
 
 CREATE TABLE LeaveRequest (
     id_LeaveRequest INT IDENTITY(1,1) PRIMARY KEY not null,
@@ -61,10 +62,21 @@ CREATE TABLE LeaveRequest (
     FOREIGN KEY (owner_eid) REFERENCES Employees(id_Employee) -- Đúng tên cột
 );
 
-ALTER TABLE LeaveRequest ALTER COLUMN title NVARCHAR(150) NOT NULL;
-ALTER TABLE LeaveRequest ALTER COLUMN reason NVARCHAR(150) NOT NULL;
+CREATE TABLE LeaveApproval (
+    id_Approval INT PRIMARY KEY IDENTITY(1,1),
+    id_LeaveRequest INT NOT NULL,
+    approvedBy NVARCHAR(150) NOT NULL, -- Quản lý phê duyệt đơn
+    approvalDate DATETIME DEFAULT GETDATE(),
+    status VARCHAR(20) CHECK (status IN ('Approved', 'Rejected')) NOT NULL,
+    comments NVARCHAR(500) NULL,
+    FOREIGN KEY (id_LeaveRequest) REFERENCES LeaveRequest(id_LeaveRequest) ON DELETE CASCADE,
+);
 
-select * from LeaveRequest;
+
+
+
+---ALTER TABLE LeaveRequest ALTER COLUMN title NVARCHAR(150) NOT NULL;
+---ALTER TABLE LeaveRequest ALTER COLUMN reason NVARCHAR(150) NOT NULL;
 -- Tạo bảng Roles
 CREATE TABLE Roles (
     id_Roles INT PRIMARY KEY,
