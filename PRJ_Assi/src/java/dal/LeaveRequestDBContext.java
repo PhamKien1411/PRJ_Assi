@@ -20,6 +20,70 @@ import java.util.logging.Logger;
  * @author ADM
  */
 public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
+    public static void main(String[] args) {
+        System.out.println("");
+        List<LeaveRequest> l = new LeaveRequestDBContext().getByCreatorNotCnfirm("john");
+        for (LeaveRequest leaveRequest : l) {
+            System.out.println(leaveRequest);
+        }
+        
+    }
+ public List<LeaveRequest> getByManager(String username) {
+        List<LeaveRequest> requests = new ArrayList<>();
+        try {
+            String sql = "SELECT lr.*\n"
+                    + "FROM LeaveRequest lr\n"
+                    + "JOIN Users u ON lr.createBy = u.username\n"
+                    + "JOIN Employees e ON u.id_Employee = e.id_Employee\n"
+                    + "WHERE u.username = ? and lr.status = 0";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, username);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                LeaveRequest request = new LeaveRequest();
+                request.setId(rs.getInt("id_LeaveRequest"));
+                request.setTitle(rs.getString("title"));
+                request.setReason(rs.getString("reason"));
+                request.setFrom(rs.getDate("from_date"));
+                request.setTo(rs.getDate("to_date"));
+                request.setStatus(rs.getInt("status"));
+
+                // Set người tạo
+                User user = new User();
+                user.setUsername(rs.getString("createBy"));
+                request.setCreatedby(user);
+
+                // Set người sở hữu
+                Employee owner = new Employee();
+                owner.setId(rs.getInt("owner_eid"));
+                request.setOwner(owner);
+
+                request.setCreateddate(rs.getTimestamp("createddate"));
+                requests.add(request);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return requests;
+    }
+ public void updateStatus(int leaveRequestId, int newStatus) {
+    try {
+        String sql = "UPDATE LeaveRequest SET status = ? WHERE id_LeaveRequest = ?";
+        PreparedStatement stm = connection.prepareStatement(sql);
+        stm.setInt(1, newStatus);
+        stm.setInt(2, leaveRequestId);
+        int rowsUpdated = stm.executeUpdate();
+        
+        if (rowsUpdated > 0) {
+            System.out.println("Leave request status updated successfully.");
+        } else {
+            System.out.println("No leave request found with the given ID.");
+        }
+    } catch (SQLException ex) {
+        Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}
 
     @Override
     public ArrayList<LeaveRequest> list() {

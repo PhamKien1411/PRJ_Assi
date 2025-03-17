@@ -12,18 +12,18 @@
         <title>JSP Page</title>
     
     
-    <style>
-            
-            .box {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding: 20px;
-                border-radius: 10px;
-                margin-bottom: 20px;
-                font-size: 40px;
-                font-weight: bold;
-            }
+        <style>
+
+                .box {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 20px;
+                    border-radius: 10px;
+                    margin-bottom: 20px;
+                    font-size: 40px;
+                    font-weight: bold;
+                }
         </style>
     
     </head>
@@ -35,7 +35,7 @@
             <a href="http://localhost:9999/PRJ_Assi/leaverequest/create">Tạo đơn</a>
         </button>
          <button>
-            <a href="http://localhost:9999/PRJ_Assi/leaverequest/duyetdonnghi">Accept Đơn</a>
+            <a href="http://localhost:9999/PRJ_Assi/leaveManager">Duyệt Đơn</a>
         </button>
         <button>
             <a href="http://localhost:9999/PRJ_Assi/">Back</a>

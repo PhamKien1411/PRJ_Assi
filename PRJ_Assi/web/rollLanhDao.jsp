@@ -34,7 +34,7 @@
             <a href="http://localhost:9999/PRJ_Assi/user/agenda">Angenda view</a>
         </button>
          <button>
-            <a href="http://localhost:9999/PRJ_Assi/leaverequest/duyetdonnghi">Accept Đơn</a>
+            <a href="http://localhost:9999/PRJ_Assi/leaveManager">Duyệt Đơn</a>
         </button>
         <button>
             <a href="http://localhost:9999/PRJ_Assi/">Back</a>

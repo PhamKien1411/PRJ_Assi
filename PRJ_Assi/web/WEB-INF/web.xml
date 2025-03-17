@@ -40,6 +40,10 @@
         <servlet-name>LeaveApprovalController</servlet-name>
         <servlet-class>controller.leaverequest.LeaveApprovalController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LeaveManager</servlet-name>
+        <servlet-class>controller.leaverequest.LeaveManager</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UpdateUser</servlet-name>
         <url-pattern>/user/update</url-pattern>
@@ -88,10 +92,14 @@
         <servlet-name>LeaveApprovalController</servlet-name>
         <url-pattern>/leaverequest/duyetdonnghi</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LeaveManager</servlet-name>
+        <url-pattern>/leaveManager</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>view/Login.html</welcome-file>
+        <welcome-file>view/login.jsp</welcome-file>
     </welcome-file-list>
 </web-app>

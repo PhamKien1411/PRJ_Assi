@@ -202,11 +202,10 @@
 
         </form>
 
-        <button><a href="/PRJ_Assi/listLeave?list=1">Xem đơn đã tạo</a></button>
-        <button><a href="/PRJ_Assi/listLeave?list=2">Xem đơn duyệt</a></button>
+        <button><a href="/PRJ_Assi/listLeave">Xem đơn đã tạo</a></button>
+        
         <button>
-            <a href="http://localhost:9999/PRJ_Assi/">Back</a>
+            <a href="http://localhost:9999/PRJ_Assi/">Back to login</a>
         </button>
-
     </body>
 </html>

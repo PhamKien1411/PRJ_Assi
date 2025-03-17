@@ -42,7 +42,12 @@ public class CreateLeaveRequest extends BaseRequiredAuthenticationController {
         } catch (Exception e) {
             req.getSession().setAttribute("message", "Lỗi! Không thể tạo đơn xin nghỉ.");
         }
-        resp.sendRedirect("http://localhost:9999/PRJ_Assi/login");
+        //resp.sendRedirect("http://localhost:9999/PRJ_Assi/login");
+     if (user.hasRole("Trưởng phòng")||user.hasRole("Nhân viên")) {
+            resp.sendRedirect("http://localhost:9999/PRJ_Assi/leaverequest/create");//khi gửi đơn thành công thì nó sẽ ở 
+            //lại trang create
+        }
+     
     }
 
     @Override
@@ -65,6 +70,10 @@ public class CreateLeaveRequest extends BaseRequiredAuthenticationController {
             }
             request.getRequestDispatcher("../view/leaverequest/createleave.jsp").forward(request, response);
         }
+    
+    
+    
+    
     }
 
 }

@@ -39,8 +39,10 @@ public class LoginController extends HttpServlet {
             session.setAttribute("user", user); // Lưu thông tin user vào session
             if (user.getUsername().equals("kien")){
                 response.sendRedirect("rollLanhDao.jsp");
+            
             } else if (user.hasRole("Trưởng phòng")){
             response.sendRedirect("rollTruongPhong.jsp");
+            
             }else{
                 response.sendRedirect("leaverequest/create");
             }
@@ -60,7 +62,7 @@ public class LoginController extends HttpServlet {
             response.sendRedirect("user/agenda");
 
         } else {
-            request.getRequestDispatcher("view/Login.html").forward(request, response);
+            request.getRequestDispatcher("view/login.jsp").forward(request, response);
         }
     }
 

@@ -61,7 +61,7 @@ CREATE TABLE LeaveRequest (
     FOREIGN KEY (createBy) REFERENCES Users(username),
     FOREIGN KEY (owner_eid) REFERENCES Employees(id_Employee) -- Đúng tên cột
 );
-
+----- bảng duyệt đơn cấp dưới
 CREATE TABLE LeaveApproval (
     id_Approval INT PRIMARY KEY IDENTITY(1,1),
     id_LeaveRequest INT NOT NULL,
@@ -198,6 +198,7 @@ ADD CONSTRAINT unique_attendance UNIQUE (id_Employee, attendance_date);
 UPDATE Employees
 SET managerid = 1
 WHERE managerid IS NOT NULL;
+
 
 
 SELECT 

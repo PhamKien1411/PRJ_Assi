@@ -4,9 +4,8 @@
  */
 package controller.leaverequest;
 
-import dal.EmployeeDBContext;
 import dal.LeaveRequestDBContext;
-import data.Employee;
+import data.LeaveRequest;
 import data.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,13 +13,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author ADM
  */
-public class ListLeave extends HttpServlet {
+public class LeaveManager extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +38,10 @@ public class ListLeave extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ListLeave</title>");
+            out.println("<title>Servlet LeaveManager</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ListLeave at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet LeaveManager at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,14 +59,12 @@ public class ListLeave extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("user");
-        EmployeeDBContext db = new EmployeeDBContext();
-        LeaveRequestDBContext context = new LeaveRequestDBContext();
-        
 
-            request.setAttribute("list", context.getByCreator(user.getUsername()));
- 
-        request.getRequestDispatcher("\\view\\leaverequest\\viewleaverequest.jsp").forward(request, response);
+        User u = (User)request.getSession().getAttribute("user");
+        List<LeaveRequest> list = new LeaveRequestDBContext().getByManager(u.getUsername());
+        request.setAttribute("list", list);
+
+        request.getRequestDispatcher("view/listConfirm.jsp?").forward(request, response);
     }
 
     /**
