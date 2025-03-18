@@ -63,7 +63,9 @@ public class DeleteLeave extends HttpServlet {
         LeaveRequestDBContext l = new LeaveRequestDBContext();
         if ("delete".equals(request.getParameter("action"))) {
             l.delete(id);
-            request.getRequestDispatcher("leaverequest/create?action=delete").forward(request, response);
+            //request.getRequestDispatcher("leaverequest/create?action=delete").forward(request, response);
+            //Khi xóa đơn thì sẽ ở lại trang list đơn        
+            response.sendRedirect(request.getContextPath() + "/listLeave");
         } else {
             EmployeeDBContext db = new EmployeeDBContext();
             ArrayList<Employee> employees = db.list();
@@ -71,31 +73,13 @@ public class DeleteLeave extends HttpServlet {
             request.setAttribute("leave", l.get(id));  
             request.getRequestDispatcher("/view/leaverequest/updateleave.jsp").forward(request, response);
         }
-
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }

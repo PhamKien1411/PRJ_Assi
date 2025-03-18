@@ -37,6 +37,7 @@ public class LoginController extends HttpServlet {
             /*-------------------------------------------*/
             HttpSession session = request.getSession();
             session.setAttribute("user", user); // Lưu thông tin user vào session
+            session.setAttribute("role", user.getRoles());
             if (user.getUsername().equals("kien")){
                 response.sendRedirect("rollLanhDao.jsp");
             
@@ -49,7 +50,6 @@ public class LoginController extends HttpServlet {
         } else {
             request.setAttribute("mess", "Username or Password is not exactly!!");
             request.getRequestDispatcher("view/login.jsp").forward(request, response);
-
         }
     }
 
@@ -58,12 +58,22 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        if (user != null) {
-            response.sendRedirect("user/agenda");
-
+//        if (user != null) {
+//            response.sendRedirect("rollLanhDao.jsp");
+//        } else {
+//            request.getRequestDispatcher("view/login.jsp").forward(request, response);
+//        }
+    if (user != null) {
+        if (user.hasRole("Lãnh đạo")) {  // Kiểm tra đúng role
+            response.sendRedirect("rollLanhDao.jsp");
+        } else if (user.hasRole("Trưởng phòng")) {
+            response.sendRedirect("rollTruongPhong.jsp");
         } else {
-            request.getRequestDispatcher("view/login.jsp").forward(request, response);
+            response.sendRedirect("view/login.jsp"); // Nếu không có role hợp lệ, quay lại login
         }
+    } else {
+        request.getRequestDispatcher("view/login.jsp").forward(request, response);
+    }
     }
 
 }

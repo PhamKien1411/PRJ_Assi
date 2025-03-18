@@ -67,23 +67,19 @@
         </script>
     </head>
     <body>
-
-
- 
-          
-            <h2>Các đơn đã tạo</h2>
-            <table border="1">
-                <thead>
-    <tr>
-        <th>Title</th>
-        <th>Reason</th>
-        <th>From_date</th>
-        <th>To_Date</th>
-        <th>Status</th>
-        <th>created_Date</th>  
-        <th>Action</th>
-    </tr>
-</thead>
+        <h2>Các đơn đã tạo</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Reason</th>
+                    <th>From_date</th>
+                    <th>To_Date</th>
+                    <th>Status</th>
+                    <th>created_Date</th>  
+                    <th>Action</th>
+                </tr>
+            </thead>
             <c:forEach items="${requestScope.list}" var="i">
                 <tr>
                     <td>${i.title}</td>
@@ -96,15 +92,15 @@
                     <td><a href="#" onclick="deleteClick(${i.id})">Delete</a>
                         <a href="deleteLeave?action=update&id=${i.id}">update</a>
                     </td>                   
-                                   
+
 
                 </tr>
             </c:forEach>
 
         </table>
-    
-    <button>
-        <a href="http://localhost:9999/PRJ_Assi/leaverequest/create">Back</a>
-    </button>
-</body>
+
+        <button>
+            <a href="http://localhost:9999/PRJ_Assi/leaverequest/create">Back</a>
+        </button>
+    </body>
 </html>

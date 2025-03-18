@@ -20,24 +20,17 @@ import java.util.logging.Logger;
  * @author ADM
  */
 public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
-    public static void main(String[] args) {
-        System.out.println("");
-        List<LeaveRequest> l = new LeaveRequestDBContext().getByCreatorNotCnfirm("john");
-        for (LeaveRequest leaveRequest : l) {
-            System.out.println(leaveRequest);
-        }
-        
-    }
- public List<LeaveRequest> getByManager(String username) {
+
+    public List<LeaveRequest> getByManager(int id) {
         List<LeaveRequest> requests = new ArrayList<>();
         try {
-            String sql = "SELECT lr.*\n"
-                    + "FROM LeaveRequest lr\n"
-                    + "JOIN Users u ON lr.createBy = u.username\n"
-                    + "JOIN Employees e ON u.id_Employee = e.id_Employee\n"
-                    + "WHERE u.username = ? and lr.status = 0";
+            String sql = "SELECT * \n"
+                    + "FROM Employees e\n"
+                    + "INNER JOIN Users u ON e.id_Employee = u.id_Employee\n"
+                    + "INNER JOIN LeaveRequest lr ON lr.createBy = u.username\n"
+                    + "WHERE e.manager_by_id = ? AND lr.status = 0;";
             PreparedStatement stm = connection.prepareStatement(sql);
-            stm.setString(1, username);
+            stm.setInt(1, id);
             ResultSet rs = stm.executeQuery();
 
             while (rs.next()) {
@@ -46,6 +39,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                 request.setTitle(rs.getString("title"));
                 request.setReason(rs.getString("reason"));
                 request.setFrom(rs.getDate("from_date"));
+                request.setCreated_by(rs.getString("createBy"));
                 request.setTo(rs.getDate("to_date"));
                 request.setStatus(rs.getInt("status"));
 
@@ -67,23 +61,24 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         }
         return requests;
     }
- public void updateStatus(int leaveRequestId, int newStatus) {
-    try {
-        String sql = "UPDATE LeaveRequest SET status = ? WHERE id_LeaveRequest = ?";
-        PreparedStatement stm = connection.prepareStatement(sql);
-        stm.setInt(1, newStatus);
-        stm.setInt(2, leaveRequestId);
-        int rowsUpdated = stm.executeUpdate();
-        
-        if (rowsUpdated > 0) {
-            System.out.println("Leave request status updated successfully.");
-        } else {
-            System.out.println("No leave request found with the given ID.");
+
+    public void updateStatus(int leaveRequestId, int newStatus) {
+        try {
+            String sql = "UPDATE LeaveRequest SET status = ? WHERE id_LeaveRequest = ?";
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, newStatus);
+            stm.setInt(2, leaveRequestId);
+            int rowsUpdated = stm.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                System.out.println("Leave request status updated successfully.");
+            } else {
+                System.out.println("No leave request found with the given ID.");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } catch (SQLException ex) {
-        Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
     }
-}
 
     @Override
     public ArrayList<LeaveRequest> list() {
@@ -156,6 +151,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         }
         return requests;
     }
+
     public List<LeaveRequest> getByCreatorNotCnfirm(String creator) {
         List<LeaveRequest> requests = new ArrayList<>();
         try {
@@ -192,8 +188,6 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         return requests;
     }
 
-
-    
     @Override
     public void insert(LeaveRequest model) {
         try {
@@ -266,8 +260,8 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
     @Override
     public void delete(LeaveRequest leaveRequest) {
     }
-    
-      public void delete(int model) {
+
+    public void delete(int model) {
         try {
             String sql = "DELETE FROM LeaveRequest WHERE id_LeaveRequest = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -280,38 +274,37 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
 
     @Override
     public LeaveRequest get(int id) {
-    String sql = "SELECT * FROM LeaveRequest WHERE id_LeaveRequest = ?";
-    try (PreparedStatement stm = connection.prepareStatement(sql)) {
-        stm.setInt(1, id);
-        try (ResultSet rs = stm.executeQuery()) {
-            if (rs.next()) {
-                LeaveRequest lr = new LeaveRequest();
-                lr.setId(rs.getInt("id_LeaveRequest"));
-                lr.setTitle(rs.getString("title"));
-                lr.setReason(rs.getString("reason"));
-                lr.setFrom(rs.getDate("from_date"));
-                lr.setTo(rs.getDate("to_date"));
-                lr.setStatus(rs.getInt("status"));
-                lr.setCreateddate(rs.getTimestamp("createddate"));
+        String sql = "SELECT * FROM LeaveRequest WHERE id_LeaveRequest = ?";
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setInt(1, id);
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    LeaveRequest lr = new LeaveRequest();
+                    lr.setId(rs.getInt("id_LeaveRequest"));
+                    lr.setTitle(rs.getString("title"));
+                    lr.setReason(rs.getString("reason"));
+                    lr.setFrom(rs.getDate("from_date"));
+                    lr.setTo(rs.getDate("to_date"));
+                    lr.setStatus(rs.getInt("status"));
+                    lr.setCreateddate(rs.getTimestamp("createddate"));
 
-                // Set người tạo
-                User user = new User();
-                user.setUsername(rs.getString("createBy"));
-                lr.setCreatedby(user);
+                    // Set người tạo
+                    User user = new User();
+                    user.setUsername(rs.getString("createBy"));
+                    lr.setCreatedby(user);
 
-                // Set người sở hữu
-                Employee owner = new Employee();
-                owner.setId(rs.getInt("owner_eid"));
-                lr.setOwner(owner);
-                
-                return lr;
+                    // Set người sở hữu
+                    Employee owner = new Employee();
+                    owner.setId(rs.getInt("owner_eid"));
+                    lr.setOwner(owner);
+
+                    return lr;
+                }
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } catch (SQLException ex) {
-        Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        return null; // Nếu không tìm thấy, trả về null
     }
-    return null; // Nếu không tìm thấy, trả về null
-}
-
 
 }

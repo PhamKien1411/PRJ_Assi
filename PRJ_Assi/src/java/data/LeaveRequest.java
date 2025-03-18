@@ -15,7 +15,15 @@ public class LeaveRequest extends BaseEntity{
     private Date from;
     private Date to;
     private int status;
+    private String created_by;
 
+    public String getCreated_by() {
+        return created_by;
+    }
+
+    public void setCreated_by(String created_by) {
+        this.created_by = created_by;
+    }
     
     private Employee owner;
     private java.util.Date createddate;

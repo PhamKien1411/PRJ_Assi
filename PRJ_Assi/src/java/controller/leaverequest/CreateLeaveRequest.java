@@ -44,8 +44,8 @@ public class CreateLeaveRequest extends BaseRequiredAuthenticationController {
         }
         //resp.sendRedirect("http://localhost:9999/PRJ_Assi/login");
      if (user.hasRole("Trưởng phòng")||user.hasRole("Nhân viên")) {
-            resp.sendRedirect("http://localhost:9999/PRJ_Assi/leaverequest/create");//khi gửi đơn thành công thì nó sẽ ở 
-            //lại trang create
+            resp.sendRedirect("http://localhost:9999/PRJ_Assi/leaverequest/create");
+        //khi gửi đơn thành công thì nó sẽ ở lại trang create
         }
      
     }
@@ -54,14 +54,17 @@ public class CreateLeaveRequest extends BaseRequiredAuthenticationController {
     protected void doGet(HttpServletRequest request, HttpServletResponse response, User user) throws ServletException, IOException {
 
         if (user.hasRole("Lãnh đạo")) {
-            request.getRequestDispatcher("../view/agendaView.jsp").forward(request, response);
+            //request.getRequestDispatcher("../view/agendaView.jsp").forward(request, response);
         } else {
             EmployeeDBContext db = new EmployeeDBContext();
+            
             ArrayList<Employee> employees = db.list();
             request.setAttribute("employees", employees);
+            
             LeaveRequestDBContext context = new LeaveRequestDBContext();
             request.setAttribute("listNot", context.getByCreatorNotCnfirm(user.getUsername()));
             request.setAttribute("list", context.getByCreator(user.getUsername()));
+            
             if ("delete".equals(request.getParameter("action"))) {
                 request.setAttribute("delete", "delete");
             }

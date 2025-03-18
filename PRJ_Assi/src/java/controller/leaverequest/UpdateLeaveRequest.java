@@ -37,7 +37,9 @@ public class UpdateLeaveRequest extends BaseAccessControlByCreator<LeaveRequest>
         lr.setCreatedby(user);
         LeaveRequestDBContext db = new LeaveRequestDBContext();
         db.update(lr);
-            resp.sendRedirect("create?action=update");
+            //resp.sendRedirect("create?action=update");
+             // Chuyển hướng về danh sách đơn nghỉ sau khi cập nhật
+            resp.sendRedirect(req.getContextPath() + "/listLeave");
     }
 
     @Override

@@ -13,6 +13,11 @@
         <title>JSP Page</title>
     </head>
     <body>
+
+        <button>
+            <a href="http://localhost:9999/PRJ_Assi/login">Back to home</a>
+        </button>     
+
         <h2>Duyệt đơn nhân viên</h2>
         <table border="1">
             <tr>
@@ -21,26 +26,25 @@
                 <th>From_date</th>
                 <th>To_Date</th>
                 <th>Status</th>
+                <th>Created_by</th>
                 <th>created_Date</th>       
                 <th>Action</th>
             </tr>
-        <c:forEach items="${requestScope.list}" var="i">
-            <tr>
-                <td>${i.title}</td>
-                <td>${i.reason}</td>
-                <td>${i.from}</td>
-                <td>${i.to}</td>
-                <td>${i.status eq 0?"In progress"
+            <c:forEach items="${requestScope.list}" var="i">
+                <tr>
+                    <td>${i.title}</td>
+                    <td>${i.reason}</td>
+                    <td>${i.from}</td>
+                    <td>${i.to}</td>
+                    <td>${i.status eq 0?"In progress"
                       :i.status eq 1?"Approved":"Rejected"}</td>
-                <td>${i.createddate}</td>
-                <td><a href="confirmLeave?action=0&id=${i.id}">Confirm</a>
-                    <a href="confirmLeave?action=1&id=${i.id}">Reject</a>
-                </td>                   
-
-
-            </tr>
-        </c:forEach>
-
-    </table>
-</body>
+                    <td>${i.created_by}</td>
+                    <td>${i.createddate}</td>
+                    <td><a href="confirmLeave?action=0&id=${i.id}">Confirm</a>
+                        <a href="confirmLeave?action=1&id=${i.id}">Reject</a>
+                    </td>                   
+                </tr>
+            </c:forEach>
+        </table>       
+    </body>
 </html>

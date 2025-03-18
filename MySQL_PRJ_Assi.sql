@@ -39,6 +39,7 @@ CREATE TABLE Users (
 	FOREIGN KEY (id_Employee) REFERENCES Employees(id_Employee)
 
 );
+select * from LeaveRequest
 -- Tạo bảng Employee_Attendance (Chấm công)
 CREATE TABLE Employee_Attendance (
     id_Attendance INT IDENTITY(1,1) PRIMARY KEY,

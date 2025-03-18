@@ -59,10 +59,10 @@ public class ConfirmLeave extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         LeaveRequestDBContext l = new LeaveRequestDBContext();
         if("0".equals(request.getParameter("action"))) {
-            l.updateStatus(id, 1);
+            l.updateStatus(id, 1);// khi ấn approve
         }
         else{
-            l.updateStatus(id, 2);
+            l.updateStatus(id, 2);// khi ấn reject 
         }
         response.sendRedirect("leaveManager");
     } 
