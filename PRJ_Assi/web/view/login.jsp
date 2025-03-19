@@ -79,9 +79,5 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 <h3 style="color: red">${requestScope.mess}</h3>
             </form>
         </div>
-
-
-
-
     </body>
 </html>

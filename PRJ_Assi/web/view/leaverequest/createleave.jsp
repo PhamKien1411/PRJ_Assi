@@ -21,6 +21,10 @@
                 text-align: center;
                 font-family: Arial, sans-serif;
             }
+            html, body {
+                height: 100%;
+                overflow: hidden; /* Ngăn chặn thanh cuộn */
+            }
             .box {
                 display: flex;
                 justify-content: center;
@@ -119,7 +123,28 @@
                 justify-content: center;
                 margin-top: 10px;
             }
-            
+            .btn-container {
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+                margin-top: 20px;
+            }
+            .btn-container button {
+                padding: 10px 20px;
+                font-size: 16px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .btn-container button a {
+                color: white;
+                text-decoration: none;
+            }
+            .btn-container button:hover {
+                background-color: #0056b3;
+            }
             
             
         </style>
@@ -198,14 +223,9 @@
             <div class="submit-container">
                 <input type="submit" value="Send"/>
             </div>
-
-
         </form>
-
+        <div class="btn-container"> 
         <button><a href="/PRJ_Assi/listLeave">Xem đơn đã tạo</a></button>
-        
-        <button>
-            <a href="http://localhost:9999/PRJ_Assi/">Back to login</a>
-        </button>
+</div>
     </body>
 </html>

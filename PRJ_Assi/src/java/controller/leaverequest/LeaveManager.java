@@ -63,7 +63,6 @@ public class LeaveManager extends HttpServlet {
         User u = (User)request.getSession().getAttribute("user");
         List<LeaveRequest> list = new LeaveRequestDBContext().getByManager(u.getEmployee().getId());
         request.setAttribute("list", list);
-
         request.getRequestDispatcher("view/listConfirm.jsp?").forward(request, response);
     }
 

@@ -25,6 +25,7 @@ public class UpdateLeaveRequest extends BaseAccessControlByCreator<LeaveRequest>
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp, User user, LeaveRequest entity) throws ServletException, IOException {
+        //name đặt ở bên Update leave như thế nào thì sang đây phải đặt tên đúng như vậy
         LeaveRequest lr = new LeaveRequest();
         lr.setId(Integer.parseInt(req.getParameter("rid")));
         lr.setTitle(req.getParameter("title"));

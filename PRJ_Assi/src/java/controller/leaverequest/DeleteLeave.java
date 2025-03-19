@@ -63,7 +63,6 @@ public class DeleteLeave extends HttpServlet {
         LeaveRequestDBContext l = new LeaveRequestDBContext();
         if ("delete".equals(request.getParameter("action"))) {
             l.delete(id);
-            //request.getRequestDispatcher("leaverequest/create?action=delete").forward(request, response);
             //Khi xóa đơn thì sẽ ở lại trang list đơn        
             response.sendRedirect(request.getContextPath() + "/listLeave");
         } else {

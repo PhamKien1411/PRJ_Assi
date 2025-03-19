@@ -44,14 +44,6 @@ public class EmployeeDBContext extends DBContext<Employee> {
         }
         return employees;
     }
-    public static void main(String[] args) {
-        EmployeeDBContext e = new EmployeeDBContext();
-        List<Employee> l = e.get(1).getStaffs();
-        for (Employee employee : l) {
-                    System.out.println(employee.getId());
-
-        }
-    }
     @Override
     public Employee get(int id) {
         ArrayList<Employee> employees = new ArrayList<>();

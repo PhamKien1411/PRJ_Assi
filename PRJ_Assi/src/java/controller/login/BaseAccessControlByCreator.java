@@ -39,7 +39,7 @@ public abstract class BaseAccessControlByCreator<T extends BaseEntity> extends B
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
-        T entity = getEntity(Integer.parseInt(req.getParameter("id")));///
+        T entity = getEntity(Integer.parseInt(req.getParameter("id")));
         if(isAccessed(entity, user))
         {
             doGet(req, resp, user, entity);

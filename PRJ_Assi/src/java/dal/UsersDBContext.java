@@ -23,14 +23,7 @@ và có nhiệm vụ truy xuất thông tin của người dùng (User) từ cơ
 
 public class UsersDBContext extends DBContext<User>{
    public User get(String username, String password){
-       try{
-        /*
-        String sql = "SELECT username,displayname FROM Users\n"
-                    + "WHERE username = ? AND [password] = ?";
-       
-       */
-
-      
+       try{      
        String sql = """
                     SELECT u.username,
                            u.displayname,
@@ -147,10 +140,5 @@ public class UsersDBContext extends DBContext<User>{
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
-    public static void main(String[] args) {
-        UsersDBContext db = new UsersDBContext();
-        User user = db.get("kien", "1234");
-        System.out.println(user.getPassword());
-    }
 }
 

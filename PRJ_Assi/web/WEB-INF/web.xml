@@ -97,7 +97,7 @@
         <url-pattern>/leaveManager</url-pattern>
     </servlet-mapping>
     <session-config>
-        <session-timeout>30</session-timeout>
+        <session-timeout>50</session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>view/login.jsp</welcome-file>

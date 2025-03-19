@@ -55,6 +55,25 @@
             }
             .btn:hover {
                 background-color: #0056b3;
+            }     
+            .btn-container {
+                margin-top: 20px;
+            }
+            .btn-container button {
+                padding: 10px 20px;
+                font-size: 16px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .btn-container button a {
+                color: white;
+                text-decoration: none;
+            }
+            .btn-container button:hover {
+                background-color: #0056b3;
             }
         </style>
 
@@ -67,6 +86,11 @@
         </script>
     </head>
     <body>
+        <div class="btn-container"> 
+       <button>
+            <a href="http://localhost:9999/PRJ_Assi/leaverequest/create">Back</a>
+        </button>
+        </div>
         <h2>Các đơn đã tạo</h2>
         <table border="1">
             <thead>
@@ -99,8 +123,6 @@
 
         </table>
 
-        <button>
-            <a href="http://localhost:9999/PRJ_Assi/leaverequest/create">Back</a>
-        </button>
+        
     </body>
 </html>
