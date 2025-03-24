@@ -47,26 +47,20 @@ public class DeleteLeave extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         LeaveRequestDBContext l = new LeaveRequestDBContext();
+        //Nếu chọn xóa đơn đi thì đơn sẽ được xóa và id sẽ biến mất
         if ("delete".equals(request.getParameter("action"))) {
             l.delete(id);
             //Khi xóa đơn thì sẽ ở lại trang list đơn        
             response.sendRedirect(request.getContextPath() + "/listLeave");
         } else {
+            //Còn chọn update 
             EmployeeDBContext db = new EmployeeDBContext();
+            //Lưu lại các thông tin đơn từ người dùng tạo
             ArrayList<Employee> employees = db.list();
             request.setAttribute("employees", employees);
             request.setAttribute("leave", l.get(id));  

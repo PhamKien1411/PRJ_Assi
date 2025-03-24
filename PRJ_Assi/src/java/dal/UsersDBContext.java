@@ -52,9 +52,7 @@ public class UsersDBContext extends DBContext<User>{
        stm.setString(2,password);
        //Thực thi truy vấn (executeQuery) và lưu kết quả vào ResultSet rs.
        ResultSet rs = stm.executeQuery();
-       
-       /*-------------------------------*/
-      
+          
        User user = null;//ban đầu chưa có đối tượng User
        //current_role: Biến tạm để kiểm tra vai trò hiện tại,
        Role current_role = new Role();

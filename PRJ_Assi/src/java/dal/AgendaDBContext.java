@@ -5,8 +5,6 @@
 package dal;
 
 import data.Agenda;
-import data.Employee;
-import data.LeaveRequest;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -54,10 +52,11 @@ public class AgendaDBContext extends DBContext<Agenda> {
         }
         return agenda;
     }
-public void saveAttendance(ArrayList<Agenda> attendances) {
-    PreparedStatement stm = null;
-    try {
-        String sql = """
+    //Ở trong SaveAttendance.java
+    public void saveAttendance(ArrayList<Agenda> attendances) {
+        PreparedStatement stm = null;
+        try {
+            String sql = """
             MERGE INTO Employee_Attendance AS target
             USING (SELECT ? AS id_Employee, ? AS attendance_date, ? AS status) AS source
             ON target.id_Employee = source.id_Employee AND target.attendance_date = source.attendance_date
@@ -67,17 +66,20 @@ public void saveAttendance(ArrayList<Agenda> attendances) {
                 INSERT (id_Employee, attendance_date, status) VALUES (source.id_Employee, source.attendance_date, source.status);
         """;
 
-        stm = connection.prepareStatement(sql);
+            stm = connection.prepareStatement(sql);
 
-        for (Agenda att : attendances) {
-            stm.setInt(1, att.getEmployeeId());
-            stm.setString(2, att.getAttendanceDate());
-            stm.setString(3, att.getStatus());
-            stm.addBatch(); // Thêm vào batch để giảm số lần gọi SQL
-        }
+            for (Agenda att : attendances) {
+                stm.setInt(1, att.getEmployeeId());
+                stm.setString(2, att.getAttendanceDate());
+                stm.setString(3, att.getStatus());
+                stm.addBatch(); // Thêm vào batch để giảm số lần gọi SQL
+            }
 
         int[] affectedRows = stm.executeBatch(); // Chạy tất cả lệnh INSERT/UPDATE một lần
-        System.out.println("Số dòng bị ảnh hưởng: " + Arrays.toString(affectedRows));
+        //Khi ấn check box, thì sẽ lưu lại 
+        //Chứa số bản ghi bị ảnh hưởng.
+        Arrays.toString(affectedRows);
+      
 
     } catch (SQLException ex) {
         ex.printStackTrace(); // In lỗi SQL ra console
@@ -89,19 +91,6 @@ public void saveAttendance(ArrayList<Agenda> attendances) {
         }
     }
 }
-
-    public static void main(String[] args) {
-        ArrayList<Agenda> attendances = new  ArrayList<>();
-        Agenda a = new Agenda();
-        a.setEmployeeId(2);
-        a.setAttendanceDate("2025-11-11");
-        a.setStatus("working");
-            attendances.add(a); 
-
-        AgendaDBContext d = new AgendaDBContext();
-        d.saveAttendance(attendances);
-    }
-
 
     @Override
     public Agenda get(int id) {

@@ -116,8 +116,6 @@
                     <td><a href="#" onclick="deleteClick(${i.id})">Delete</a>
                         <a href="deleteLeave?action=update&id=${i.id}">update</a>
                     </td>                   
-
-
                 </tr>
             </c:forEach>
 

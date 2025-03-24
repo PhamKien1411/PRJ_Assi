@@ -26,31 +26,37 @@ public class UpdateLeaveRequest extends BaseAccessControlByCreator<LeaveRequest>
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp, User user, LeaveRequest entity) throws ServletException, IOException {
         //name đặt ở bên Update leave như thế nào thì sang đây phải đặt tên đúng như vậy
+        
         LeaveRequest lr = new LeaveRequest();
         lr.setId(Integer.parseInt(req.getParameter("rid")));
         lr.setTitle(req.getParameter("title"));
         lr.setReason(req.getParameter("reason"));
         lr.setFrom(Date.valueOf(req.getParameter("from")));
         lr.setTo(Date.valueOf(req.getParameter("to")));
+        
         Employee owner = new Employee();
         owner.setId(Integer.parseInt(req.getParameter("ownerid_Employee")));
         lr.setOwner(owner);
         lr.setCreatedby(user);
-        LeaveRequestDBContext db = new LeaveRequestDBContext();
+        //Tạo đối tượng LeaveRequestDBContext để thực hiện cập nhật dữ liệu.
+        LeaveRequestDBContext db = new LeaveRequestDBContext();       
+        //Gọi update() để cập nhật vào database:
         db.update(lr);
             //resp.sendRedirect("create?action=update");
-             // Chuyển hướng về danh sách đơn nghỉ sau khi cập nhật
+            // Chuyển hướng về danh sách tạo đơn sau khi cập nhật
             resp.sendRedirect(req.getContextPath() + "/listLeave");
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp, User user, LeaveRequest entity) throws ServletException, IOException {
-        EmployeeDBContext db = new EmployeeDBContext();
-        ArrayList<Employee> employees = db.list();
-        req.setAttribute("employees", employees);
-        req.setAttribute("leaverequest", entity);
-        req.getRequestDispatcher("../view/leaverequest/updateleave.jsp").forward(req, resp);
-
+//        cái này không cần thiết
+//        EmployeeDBContext db = new EmployeeDBContext();
+//        //
+//        ArrayList<Employee> employees = db.list();
+//        
+//        req.setAttribute("employees", employees);
+//        req.setAttribute("leaverequest", entity);
+//        req.getRequestDispatcher("../view/leaverequest/updateleave.jsp").forward(req, resp);
     }
 
     @Override

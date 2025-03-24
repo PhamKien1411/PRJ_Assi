@@ -60,13 +60,11 @@ public class ListLeave extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //Lấy đối tượng User đang đăng nhập từ session.
         User user = (User) request.getSession().getAttribute("user");
-        EmployeeDBContext db = new EmployeeDBContext();
+        //Lấy danh sách đơn của cấp dưới gửi lên cho cấp trên
         LeaveRequestDBContext context = new LeaveRequestDBContext();
-        
-
-            request.setAttribute("list", context.getByCreator(user.getUsername()));
- 
+        request.setAttribute("list", context.getByCreator(user.getUsername()));
         request.getRequestDispatcher("\\view\\leaverequest\\viewleaverequest.jsp").forward(request, response);
     }
 

@@ -89,7 +89,7 @@
                     <td>${i.created_by}</td>
                     <td>${i.createddate}</td>
                     <td>
-                        <a href="confirmLeave?action=0&id=${i.id}" style="color: blue">Confirm</a>
+                        <a href="confirmLeave?action=0&id=${i.id}" style="color: blue">Approve</a>
                         |
                         <a href="confirmLeave?action=1&id=${i.id}" style="color: red">Reject</a>
                     </td>

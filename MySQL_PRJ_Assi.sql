@@ -62,16 +62,7 @@ CREATE TABLE LeaveRequest (
     FOREIGN KEY (createBy) REFERENCES Users(username),
     FOREIGN KEY (owner_eid) REFERENCES Employees(id_Employee) -- Đúng tên cột
 );
------ bảng duyệt đơn cấp dưới
-CREATE TABLE LeaveApproval (
-    id_Approval INT PRIMARY KEY IDENTITY(1,1),
-    id_LeaveRequest INT NOT NULL,
-    approvedBy NVARCHAR(150) NOT NULL, -- Quản lý phê duyệt đơn
-    approvalDate DATETIME DEFAULT GETDATE(),
-    status VARCHAR(20) CHECK (status IN ('Approved', 'Rejected')) NOT NULL,
-    comments NVARCHAR(500) NULL,
-    FOREIGN KEY (id_LeaveRequest) REFERENCES LeaveRequest(id_LeaveRequest) ON DELETE CASCADE,
-);
+
 
 
 

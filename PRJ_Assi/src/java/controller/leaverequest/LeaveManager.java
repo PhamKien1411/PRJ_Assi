@@ -62,6 +62,9 @@ public class LeaveManager extends HttpServlet {
 
         User u = (User)request.getSession().getAttribute("user");
         List<LeaveRequest> list = new LeaveRequestDBContext().getByManager(u.getEmployee().getId());
+        //getEmployee và getId là lấy tất cả các đơn theo id của manager là người dăng nhập
+        //VD: kien đăng nhập có id = 1 thì sẽ lấy tất cả các đơn của nhân viên cấp dưới 
+        // được quản lý bởi kiên có id là 1
         request.setAttribute("list", list);
         request.getRequestDispatcher("view/listConfirm.jsp?").forward(request, response);
     }

@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  * @author ADM
  */
 public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
-
+    //Ở trong trang LeaveManager.jsp
     public List<LeaveRequest> getByManager(int id) {
         List<LeaveRequest> requests = new ArrayList<>();
         try {
@@ -61,7 +61,9 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         }
         return requests;
     }
-
+    
+    
+    //Ở trong trang ConfirmLeave.jsp
     public void updateStatus(int leaveRequestId, int newStatus) {
         try {
             String sql = "UPDATE LeaveRequest SET status = ? WHERE id_LeaveRequest = ?";
@@ -80,6 +82,8 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         }
     }
 
+    
+    //ở trong CreateLeaveRequest.jsp
     @Override
     public ArrayList<LeaveRequest> list() {
         ArrayList<LeaveRequest> requests = new ArrayList<>();
@@ -115,16 +119,18 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         }
         return requests; //Trả về danh sách hợp lệ
     }
-
+    //ở trong CreateLeaveRequest.jsp
     public List<LeaveRequest> getByCreator(String creator) {
         List<LeaveRequest> requests = new ArrayList<>();
         try {
+            //Lọc đơn xin nghỉ dựa trên createBy (tên người tạo).
             String sql = "select * from leaveRequest where  createBy = ?";
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, creator);
             ResultSet rs = stm.executeQuery();
 
             while (rs.next()) {
+                //Tạo đối tượng LeaveRequest và gán giá trị từ cột trong CSDL
                 LeaveRequest request = new LeaveRequest();
                 request.setId(rs.getInt("id_LeaveRequest"));
                 request.setTitle(rs.getString("title"));
@@ -133,12 +139,13 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                 request.setTo(rs.getDate("to_date"));
                 request.setStatus(rs.getInt("status"));
 
-                // Set người tạo
+                //Gán thông tin người tạo (Created By)
                 User user = new User();
                 user.setUsername(rs.getString("createBy"));
                 request.setCreatedby(user);
 
-                // Set người sở hữu
+                // Set người sở hữu đơn là cấp trên
+                //Xem đơn của nhân viên cấp dưới gửi lên 
                 Employee owner = new Employee();
                 owner.setId(rs.getInt("owner_eid"));
                 request.setOwner(owner);
@@ -151,7 +158,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         }
         return requests;
     }
-
+    //ở trong CreateLeaveRequest.jsp
     public List<LeaveRequest> getByCreatorNotCnfirm(String creator) {
         List<LeaveRequest> requests = new ArrayList<>();
         try {
@@ -189,11 +196,15 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
     }
 
     @Override
+    //ở trong CreateLeaveRequest.jsp
     public void insert(LeaveRequest model) {
         try {
-
+            
+            
             String sql = "INSERT INTO LeaveRequest (title, reason, from_date, to_date, status, createBy, owner_eid, createddate)  VALUES  (?,?, ?, ?, 0, ?, ?, GETDATE())";
+            
             PreparedStatement stm = connection.prepareStatement(sql);
+            
             stm.setString(1, model.getTitle());
             stm.setString(2, model.getReason());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -201,8 +212,11 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
 
             java.util.Date utilDate = sdf.parse(model.getFrom().toString());
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+            
             stm.setDate(3, sqlDate);
             java.util.Date utilDateto = sdf.parse(model.getTo().toString());
+            
+            
             java.sql.Date sqlDateto = new java.sql.Date(utilDateto.getTime());
             stm.setDate(4, sqlDateto);
             stm.setString(5, model.getCreatedby().getUsername());
@@ -215,11 +229,12 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         }
 
     }
-
+    //Ở trong trang UpdateLeaveRequest
     @Override
     public void update(LeaveRequest model) {
         try {
             connection.setAutoCommit(false);
+            //Cập nhật tiêu đề, lý do, ngày nghỉ, người sở hữu của đơn có ID id_LeaveRequest.
             String sql = """
                          Update LeaveRequest
                          Set title = ?,
@@ -229,14 +244,18 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                              owner_eid = ?
                          where id_LeaveRequest = ?
                          """;
+            //
             PreparedStatement stm = connection.prepareStatement(sql);
             stm.setString(1, model.getTitle());
             stm.setString(2, model.getReason());
             stm.setDate(3, (Date) model.getFrom());
             stm.setDate(4, (Date) model.getTo());
+            //model.getOwner().getId() lấy ID của chủ sở hữu.
             stm.setInt(5, model.getOwner().getId());
             stm.setInt(6, model.getId());
+            //Thực hiện câu lệnh SQL cập nhật.
             stm.executeUpdate();
+            //Xác nhận cập nhật dữ liệu vào MySQL.
             connection.commit();
 
         } catch (SQLException ex) {
@@ -260,7 +279,9 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
     @Override
     public void delete(LeaveRequest leaveRequest) {
     }
-
+    
+    
+    //Ở trong trang DeleteLeave.java
     public void delete(int model) {
         try {
             String sql = "DELETE FROM LeaveRequest WHERE id_LeaveRequest = ?";

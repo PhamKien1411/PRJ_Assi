@@ -76,7 +76,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
 
                 <input type="submit" value="Login"/>
+                
                 <h3 style="color: red">${requestScope.mess}</h3>
+                <%-- lấy từ request.setAttribute ở bên LoginController trong phương thức doPost--%>
             </form>
         </div>
     </body>

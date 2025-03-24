@@ -76,6 +76,8 @@
                         <th>${day}</th>
                     </c:forEach>
                 </tr>
+                
+                
                 <c:forEach items="${sessionScope.user.employee.staffs}" var="s">
                     <tr>
                         <td>${s.name}</td>
